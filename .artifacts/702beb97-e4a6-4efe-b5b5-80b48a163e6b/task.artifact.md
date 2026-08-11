@@ -1,0 +1,6 @@
+- [ ] Import `shimmer` package in `sip_view.dart`
+- [ ] Create `_buildShimmerLoading` method in `sip_view.dart`
+- [ ] Create `_buildActiveSipShimmer` method in `sip_view.dart`
+- [ ] Create `_buildPlanCardShimmer` method in `sip_view.dart`
+- [ ] Replace `CircularProgressIndicator` with shimmer widgets in `Obx` blocks
+- [ ] Verify the layout and shimmer colors

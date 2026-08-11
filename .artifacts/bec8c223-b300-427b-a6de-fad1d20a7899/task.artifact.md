@@ -1,0 +1,7 @@
+- [x] Fix crash in `ReferralController`
+- [x] Make `ReferralView` responsive and crash-proof
+    - [x] Update `DashedBorderPainter` safety
+    - [x] Add `LayoutBuilder` for dynamic stats grid
+    - [x] Use `FittedBox`/`Flexible` for text safety
+    - [x] Ensure `SafeArea` in header
+- [x] Verify functionality

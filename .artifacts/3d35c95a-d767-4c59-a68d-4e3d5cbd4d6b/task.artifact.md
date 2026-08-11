@@ -1,0 +1,5 @@
+- [x] Disable Impeller rendering in `AndroidManifest.xml`
+- [x] Register `PurchaseRepository` in `main.dart`
+- [x] Refactor `main.dart` initialization sequence for stability
+- [x] Add safety check to `DioClient` interceptor
+- [x] Add safety check to `AuthService.logout()`

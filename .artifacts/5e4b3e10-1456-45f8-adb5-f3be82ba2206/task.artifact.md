@@ -1,0 +1,12 @@
+- `[x]` Update `ProfileController` with enhanced image picking
+- `[x]` Update `ProfileView` with clickable profile image and Hero animation
+- `[x]` Implement Full Screen Image Preview Dialog in `ProfileView`
+- `[x]` Add Edit Icon Overlay on User Card in `ProfileView`
+- `[x]` Fix `PersonalInformationView` compilation error
+- `[x]` Implement Image Picker Options in `PersonalInformationView`
+- `[x]` Update `PersonalInformationView` to use `CachedNetworkImage`
+- `[x]` Redesign Image Preview Dialog to WhatsApp-style (ProfileView)
+- `[x]` Implement WhatsApp-style Preview in `PersonalInformationView`
+- `[x]` Adjust Preview Alignment and Adaptive Background (ProfileView)
+- `[x]` Adjust Preview Alignment and Adaptive Background (PersonalInformationView)
+- `[x]` Final UI Polishing and Verification

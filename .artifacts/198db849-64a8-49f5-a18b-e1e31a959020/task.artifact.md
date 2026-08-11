@@ -1,0 +1,28 @@
+# Admin Module Refactor - Task List
+
+- [x] **Phase 1: Project Structure & Dashboard**
+    - [x] Create directory structure for new modules
+    - [x] Implement `AdminDashboard` Module (View, Controller, Binding)
+- [x] **Phase 2: User Management**
+    - [x] Implement `UserManagement` Module (View, Controller, Binding)
+- [x] **Phase 3: Sell Requests**
+    - [x] Implement `SellRequests` Module (View, Controller, Binding)
+- [x] **Phase 4: Metal & GST Management**
+    - [x] Implement `MetalPrice` Module (View, Controller, Binding)
+    - [x] Implement `GstManagement` Module (View, Controller, Binding)
+- [x] **Phase 5: Routing & Cleanup**
+    - [x] Update `AppRoutes` with new dashboard route
+    - [x] Remap existing routes in `AppPages` to new modules
+    - [x] Delete legacy `admin` module files
+- [x] **Phase 6: UI Enhancements (Next.js Match)**
+    - [x] Implement Glassmorphism Header & Sidebar
+    - [x] Add Breadcrumbs to all admin views
+    - [x] Implement Responsive Data Tables with horizontal scroll
+    - [x] Redesign Modals for User Details and Sell Requests
+    - [x] Optimize layouts for Mobile, Tablet, and Desktop
+- [/] **Phase 7: Verification & Integration**
+    - [ ] Align API calls with Next.js (Complex Rate payload, PATCH for rejection)
+    - [ ] Integrate Real Statistics in Admin Dashboard
+    - [ ] Add Current Data Fetching to Metal Price & GST modules
+    - [ ] Final Performance audit and Cleanup
+    - [ ] Run `flutter analyze` and fix any issues

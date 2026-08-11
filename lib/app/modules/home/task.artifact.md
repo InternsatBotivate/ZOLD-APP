@@ -1,0 +1,3 @@
+- [ ] Wrap `_buildTabs` in `Obx` in `AuspiciousDaysView` [x]
+- [ ] Verify tab switching logic [ ]
+- [ ] Check for other UI/UX improvements [ ]

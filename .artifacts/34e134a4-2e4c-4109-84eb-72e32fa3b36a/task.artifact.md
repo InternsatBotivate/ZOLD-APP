@@ -1,0 +1,25 @@
+# Task List - Wallet Module Implementation
+
+- [ ] Create Wallet Module structure
+    - [ ] `lib/app/modules/wallet/bindings/wallet_binding.dart`
+    - [ ] `lib/app/modules/wallet/controllers/wallet_controller.dart`
+    - [ ] `lib/app/modules/wallet/views/wallet_view.dart`
+- [ ] Implement WalletController logic
+    - [ ] Fetch balance and stats from `WalletRepository`
+    - [ ] Fetch coin inventory and transactions from `CoinRepository`
+- [ ] Build WalletView UI
+    - [ ] Header section (Total Value & Ratio Bar)
+    - [ ] Metal Cards (Gold & Silver details)
+    - [ ] Gold Breakdown (Free & Pledged)
+    - [ ] Coin Portfolio Grid
+    - [ ] Active Deliveries Section
+    - [ ] SIP Plans Banner
+- [ ] Integrate into MainView
+    - [ ] Replace placeholder in `MainView`
+    - [ ] Update `MainBinding`
+- [ ] Update Routes and Drawer
+    - [ ] Register `/portfolio` route
+    - [ ] Update drawer navigation
+- [ ] Final Verification
+    - [ ] Run `flutter analyze`
+    - [ ] Fix any UI issues

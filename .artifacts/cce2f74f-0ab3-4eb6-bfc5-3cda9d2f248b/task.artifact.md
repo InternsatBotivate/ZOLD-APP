@@ -1,0 +1,8 @@
+- [x] Implement Shimmer Skeletons in `HomeView`
+    - [x] Create `_buildShimmerRateCard()`
+    - [x] Create `_buildShimmerPortfolioCard()`
+    - [x] Create `_buildShimmerLiveRateHeader()`
+    - [x] Create `_buildShimmerPriceChart()`
+- [x] Update `HomeView.build()` to handle `isLoading` state with shimmer
+- [x] Verify the implementation by ensuring all data paths still work
+- [x] Create Walkthrough artifact

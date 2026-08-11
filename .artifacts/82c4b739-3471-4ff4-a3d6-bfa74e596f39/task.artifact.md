@@ -1,0 +1,3 @@
+- [x] Update `saved_addresses_view.dart` with new UI and responsiveness
+- [x] Refine `profile_controller.dart` address logic
+- [ ] Verify functionality and UI/UX

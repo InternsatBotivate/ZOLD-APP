@@ -1,0 +1,10 @@
+- [x] Fix `GiftGoldBottomSheet` for dark/light mode
+    - [x] Update main container and header colors
+    - [x] Update progress indicator colors
+    - [x] Update step-specific UI components (Metal, Form, Amount, etc.)
+    - [x] Update input fields and buttons
+- [x] Fix `GiftGoldView` for dark/light mode
+    - [x] Update Scaffold and Header
+    - [x] Update `_MetalColors` logic for theme compatibility
+    - [x] Update all step widgets to use theme lookups
+- [x] Verify UI in both modes

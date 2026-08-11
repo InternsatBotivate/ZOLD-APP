@@ -1,0 +1,21 @@
+# Task List - Fix RenderFlex Errors & Ensure Responsiveness
+
+- [x] **Home Module**
+    - [x] Fix Top Bar Row overflow in `home_view.dart`
+    - [x] Fix Rate Card inner Row overflow in `home_view.dart`
+    - [x] Fix Portfolio Card layout in `home_view.dart`
+- [x] **Buy/Sell Module**
+    - [x] Fix Header hardcoded widths and offsets in `buy_sell_view.dart`
+    - [x] Fix Preset button widths in `buy_sell_view.dart`
+    - [x] Fix Summary Row label overflows in `buy_sell_view.dart`
+    - [x] Fix Purity Card text wrapping in `buy_sell_view.dart`
+- [x] **Gold Coins Module**
+    - [x] Fix Trust Badge Row overflow in `gold_coins_view.dart`
+    - [x] Fix Header layout responsiveness in `gold_coins_view.dart`
+- [x] **History Module**
+    - [x] Fix Transaction Item Row overflow in `history_view.dart`
+- [x] **Admin Modules**
+    - [x] Fix Live Price Card text overflow in `metal_price_view.dart`
+- [x] **Verification**
+    - [x] Review all modified files for potential edge-case overflows
+    - [x] Fix compilation error in `history_view.dart` (removed invalid `flex` parameter)

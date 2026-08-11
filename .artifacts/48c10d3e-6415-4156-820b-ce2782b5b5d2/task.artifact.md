@@ -1,0 +1,19 @@
+- [x] Socket Listener Cleanup
+    - [x] BuySellController
+    - [x] CartController
+    - [x] NotificationsController
+- [x] Controllers Created Inside build() (AdminView)
+    - [x] Update AdminController to include controllers
+    - [x] Update AdminView to use AdminController's controllers
+- [x] Dialog / BottomSheet Controllers
+    - [x] DeliveriesView (otpController disposal)
+    - [x] SipView (Form sheet controllers disposal)
+- [x] Missing onClose() & Resource Disposal (PartnersController)
+- [x] GetX Workers Disposal
+    - [x] PartnersController
+    - [x] GiftController
+    - [x] SipController
+    - [x] HistoryController
+- [x] StatefulWidget Disposal (CreateGoalView, EditGoalView)
+- [x] Future / Timer Cleanup (SipController)
+- [x] Final Validation (flutter analyze)

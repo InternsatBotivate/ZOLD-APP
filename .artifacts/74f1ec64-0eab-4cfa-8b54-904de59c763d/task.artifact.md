@@ -1,0 +1,5 @@
+- `[x]` Implement `SecurityPrivacyController`
+- `[x]` Update `ProfileBinding` to include the new controller
+- `[x]` Refactor `SecurityPrivacyView` to match screenshots and implement Edit Mode
+- `[x]` Verify UI and functionality
+- `[x]` Run `flutter analyze` and fix any issues

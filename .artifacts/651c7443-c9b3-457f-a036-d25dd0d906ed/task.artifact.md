@@ -1,0 +1,15 @@
+- [x] Update AppBar to match screenshot (custom buttons for print/download)
+- [x] Refine "Important Notice" banner styling
+- [x] Update "Not Acknowledged" banner with yellowish style and cross icon
+- [x] Update Introduction text box styling
+- [x] Implement "Market Risk", "Valuation Risk", and "Regulatory Risk" items
+- [x] Update "Key Considerations" section with blue background and 4 points
+- [x] Add Disclaimer box at the bottom
+- [x] Style primary and secondary buttons
+- [x] Add footer text
+- [x] Verify success dialog and acknowledged state UI
+- [x] Add dependencies (`path_provider`, `permission_handler`, `pdf`, `printing`) to `pubspec.yaml`
+- [x] Add PDF URL constant to `ApiConstants`
+- [x] Create `FileUtils` utility for downloading files
+- [x] Connect download button in `RiskDisclosureView`
+- [ ] Verify download functionality on device

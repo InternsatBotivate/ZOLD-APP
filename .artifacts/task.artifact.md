@@ -1,0 +1,10 @@
+- [x] Fix `ReferralController`
+    - [x] Add reactive user listener in `onInit`
+    - [x] Improve loading and state handling
+- [x] Fix `ReferralView`
+    - [x] Replace `withValues` with `withOpacity` for compatibility
+    - [x] Refactor `Obx` usage to prevent UI flicker
+    - [x] Ensure all icons and colors are consistent with the theme
+- [x] Verification
+    - [x] Static analysis check
+    - [x] Verify logic flow

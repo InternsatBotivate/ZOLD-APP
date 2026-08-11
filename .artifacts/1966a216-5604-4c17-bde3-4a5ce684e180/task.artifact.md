@@ -1,0 +1,4 @@
+- [x] Fix overflow in `_buildHeader`
+- [x] Update `_buildCartItem` to use `Wrap` for Qty/Price to show full price
+- [x] Fix overflow in `_summaryRow`
+- [x] Test responsiveness and full price display

@@ -1,0 +1,3 @@
+- [x] Update MainBinding to use Get.put for WalletController
+- [x] Add fenix: true to lazyPut calls in MainBinding for better stability
+- [x] Verify Portfolio tab loads correctly

@@ -1,0 +1,6 @@
+- [x] Update `WalletBinding` to include all necessary dependencies for `WalletController` and `GiftController`
+- [x] Refactor `GiftGoldView` to match Next.js UI 100%
+- [x] Fix deprecated `withOpacity` usages and use `withValues`
+- [x] Ensure responsive layout and animations match Next.js
+- [x] Verify API integration for user lookup and sending gifts
+- [x] Run `flutter analyze` and fix all issues

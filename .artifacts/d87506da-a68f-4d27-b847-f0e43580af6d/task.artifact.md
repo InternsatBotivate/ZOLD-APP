@@ -1,0 +1,5 @@
+- [x] Research current `HomeDrawer` implementation and assets.
+- [x] Create implementation plan for UI fix.
+- [x] Update `HomeDrawer` with new styling, icons, and logo.
+- [x] Verify active state logic for Home/Portfolio/Profile tabs.
+- [x] Finalize UI details (colors, spacing, separators).

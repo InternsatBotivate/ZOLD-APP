@@ -1,0 +1,5 @@
+- [x] Fix blank screen in `KYCStatusView`
+    - [x] Wrap body in `Obx` for reactivity
+    - [x] Handle all `KycStatus` values explicitly (Approved, Pending, Rejected, Incomplete)
+    - [x] Refine contrast and layout for better visibility
+- [x] Verify UI rendering in both light and dark themes

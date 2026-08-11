@@ -1,0 +1,8 @@
+- [x] Refactor `faq_view.dart` into a full Scaffold page
+    - [x] Update Header UI (Back button, Help icon)
+    - [x] Update Search Bar UI
+    - [x] Update Category Chips UI
+    - [x] Update FAQ Card UI (Category badges, Question/Answer styles)
+    - [x] Update "Still need help?" Section (Purple gradient, Support cards)
+- [x] Update `profile_view.dart` navigation
+- [x] Verify functionality and UI matching screenshots

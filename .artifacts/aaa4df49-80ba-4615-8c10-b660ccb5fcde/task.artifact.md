@@ -1,0 +1,6 @@
+- `[x]` Update `PartnersController` with Form Keys and validation logic
+- `[x]` Refactor `PartnersView` for responsive dialogs and validation
+    - `[x]` Update `_buildModernTextField` for flexibility
+    - `[x]` Refactor `_showAddPartnerDialog` (Responsive + Validation)
+    - `[x]` Refactor `_showCompleteProfileDialog` (Responsive + Validation)
+- `[x]` Verify changes with `analyze_file`

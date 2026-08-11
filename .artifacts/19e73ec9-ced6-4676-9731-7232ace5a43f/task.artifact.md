@@ -1,0 +1,8 @@
+- [x] Update `LanguagesView` UI components
+    - [x] Implement new `AppBar` with subtitle
+    - [x] Create "Current Language" section
+    - [x] Add "Available Languages" header
+    - [x] Redesign language list items with selection states
+    - [x] Update bottom button to "Reset to Default Settings"
+- [x] Verify UI on device/emulator (if possible) or review code carefully
+- [x] Create walkthrough artifact

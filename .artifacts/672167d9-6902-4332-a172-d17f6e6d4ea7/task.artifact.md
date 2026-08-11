@@ -1,0 +1,7 @@
+- [x] Fix controller initialization in `ReferralBinding`
+- [x] Move data-fetching logic to `onInit` and add defensive checks in `ReferralController`
+- [x] Remove `SafeArea` conflict and fix layout in `ReferralView`
+    - [x] Remove outer `SafeArea`
+    - [x] Update `_buildStatsGrid` with safe width and error guards
+    - [x] Wrap `CustomPaint` in `_buildReferralCodeSection` with finite constraints
+- [x] Run `flutter analyze` and verify fixes

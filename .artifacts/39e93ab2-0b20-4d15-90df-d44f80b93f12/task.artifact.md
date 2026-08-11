@@ -1,0 +1,4 @@
+- `[x]` Create `NotificationLocalDataSource` for local persistence
+- `[x]` Update `ProfileRepository` to use both local and remote data sources
+- `[x]` Refactor `ProfileController` for optimistic updates and better error handling
+- `[x]` Final UI polish and verification

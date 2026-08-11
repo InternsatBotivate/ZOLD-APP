@@ -1,0 +1,8 @@
+- [x] Review dependencies and assets usage
+- [x] Create Implementation Plan
+- [x] Execute Cleanup
+    - [x] Remove unused dependencies from `pubspec.yaml`
+    - [x] Delete unused assets from `assets/images/`
+    - [x] Run `flutter pub get`
+    - [x] Run `flutter analyze`
+- [x] Verify changes

@@ -1,0 +1,24 @@
+# Task List - Phase 5.3 Crash Fix
+
+- `[x]` 1. Razorpay Callback Safety & Controller Lifecycle
+    - `[x]` `BuySellController`: Safe Razorpay callbacks, session null checks, socket listener cleanup.
+    - `[x]` `CoinCheckoutController`: Safe Razorpay callbacks, session null checks.
+    - `[x]` `SipController`: Safe Razorpay callbacks, pending ID safety.
+- `[x]` 2. JSON Parsing Safety (RemoteDataSources)
+    - `[x]` `PartnerRemoteDataSourceImpl`: Safe parsing of 'partners' list and details.
+- `[x]` 3. Socket Event Safety
+    - `[x]` `HomeController`: Validate socket data types and keys.
+    - `[x]` `BuySellController`: Validate socket data types and keys.
+- `[x]` 4. Future.wait & Result Safety (Portfolio Fix)
+    - `[x]` `WalletController`: Safe handling of `Future.wait` results, fix portfolio valuation crashes.
+    - `[x]` `GoldCoinsController`: Safe handling of `Future.wait` results and casts.
+- `[x]` 5. Model Parsing
+    - `[x]` `auth_models.dart`: Remove force unwraps, handle nullable fields.
+- `[x]` 6. Authentication & Startup Safety
+    - `[x]` `AuthService`: Prevent race conditions, safe logout.
+- `[x]` 7. View Safety (Material Colors)
+    - `[x]` Fix unsafe color unwraps across views.
+- `[x]` 8. Final Verification
+    - `[x]` Run `flutter pub get`.
+    - `[x]` Run `flutter analyze`.
+    - `[x]` Final check for responsive UI integrity.

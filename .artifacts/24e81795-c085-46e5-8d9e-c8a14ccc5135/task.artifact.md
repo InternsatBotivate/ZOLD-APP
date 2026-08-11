@@ -1,0 +1,19 @@
+- [x] Create `AuspiciousDaysController` with logic ported from Next.js
+- [x] Create `AuspiciousDaysBinding`
+- [x] Update `AppPages` with the new binding
+- [x] Update `HomeView`'s Auspicious Days banner
+- [x] Implement `AuspiciousDaysView` (List View)
+    - [x] Golden Header
+    - [x] Today's Panchang Card
+    - [x] Info Banner
+    - [x] Tab Bar
+    - [x] Upcoming Day Cards
+    - [x] Why Buy Section
+- [x] Implement Day Detail (Bottom Sheet / View)
+    - [x] Header with Dynamic Gradient
+    - [x] Countdown Card
+    - [x] Significance & Benefits
+    - [x] Auto-Buy Setup Section
+- [x] Verify Light/Dark Theme
+- [x] Verify Responsiveness
+- [x] Run `flutter analyze`

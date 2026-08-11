@@ -1,0 +1,22 @@
+- [x] Modify `CartController` for robust optimistic updates and rollback
+    - [x] Add optimistic logic to `removeItem`
+    - [x] Remove `Get.snackbar` from error handling
+- [x] Refactor `CoinCard`
+    - [x] Remove `_isAdding` state and related logic
+    - [x] Remove `Future.delayed` and `Get.snackbar`
+    - [x] Ensure `Obx` wrapper handles instant UI transition to `[-] Qty [+]`
+- [x] Verify state synchronization across AppBar, Product Card, and Cart Drawer
+- [x] Run `flutter analyze`
+- [x] Fix Checkout Session Restoration
+    - [x] Correct `getActiveSession` parsing in `CartRemoteDataSourceImpl`
+    - [x] Update `CartController.checkout()` to refresh state
+    - [x] Refine `CoinCheckoutController.restoreSession()`
+- [x] Verify Phase 2 Synchronization
+- [x] Final `flutter analyze`
+- [x] Phase 3: UX Refinement
+    - [x] Refine `CartButton` badge animation (subtle scale)
+    - [x] Update `CoinCard` with `AspectRatio` and image fade
+    - [x] Refine `GoldCoinsView` grid responsiveness and shimmer
+    - [x] Improve `CartDrawer` SafeArea and spacing
+    - [x] Ensure `CoinCheckoutView` keyboard handling and transitions
+- [x] Run `flutter analyze`

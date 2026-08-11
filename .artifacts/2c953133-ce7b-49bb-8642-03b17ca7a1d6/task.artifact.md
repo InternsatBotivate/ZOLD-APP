@@ -1,0 +1,4 @@
+- [x] Fix Silver button gradient in `MetalButton`
+- [x] Update shadow color for Silver button in dark mode
+- [x] Fix accent colors in `BuySellView` for Silver in dark mode
+- [x] Verify the changes in `BuySellView`

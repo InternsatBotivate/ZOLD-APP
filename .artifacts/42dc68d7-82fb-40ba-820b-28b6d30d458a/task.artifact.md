@@ -1,0 +1,4 @@
+- `[x]` Add validation logic to AuspiciousDaysController
+- `[x]` Improve keyboard handling in AuspiciousDayDetailView
+- `[x]` Add validation UI in AuspiciousDayDetailView
+- `[x]` Final UI polish for responsiveness

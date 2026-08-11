@@ -1,0 +1,7 @@
+- `[ ]` 1. Implement Route Restoration in `AuthService`
+- `[ ]` 2. Update `AuthMiddleware` for restoration redirection
+- `[ ]` 3. Add `routingCallback` to `GetMaterialApp` in `main.dart`
+- `[ ]` 4. Fix `AndroidManifest.xml` (remove `taskAffinity`)
+- `[ ]` 5. Production Validation
+    - `[ ]` Run `flutter analyze`
+    - `[ ]` Verify scenario cases

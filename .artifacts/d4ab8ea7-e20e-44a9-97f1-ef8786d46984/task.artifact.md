@@ -1,0 +1,8 @@
+- [x] Fix Deliveries Module Theme Support
+    - [x] Update `deliveries_view.dart` with theme-aware colors
+    - [x] Update `coin_delivery_bottom_sheet.dart` with theme-aware colors
+- [x] Fix Buy Coins Module Theme Support
+    - [x] Update `gold_coins_view.dart` with theme-aware colors
+    - [x] Update `coin_card.dart` with theme-aware colors
+- [x] Verification
+    - [x] Manual verification of Light/Dark mode transitions

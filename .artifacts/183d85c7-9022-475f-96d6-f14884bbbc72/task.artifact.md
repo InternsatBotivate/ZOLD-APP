@@ -1,0 +1,4 @@
+- [x] Reduce Rate Card height and adjust padding in `home_view.dart`
+- [x] Reduce Portfolio Card spacing and padding in `home_view.dart`
+- [x] Update Shimmer effect heights in `home_view.dart`
+- [x] Verify responsiveness and layout

@@ -1,0 +1,5 @@
+- [x] Update `BuySellView` to remove full-screen loading for input state
+- [x] Refactor `_buildInputField` styling in `BuySellView`
+- [x] Update `_buildPriceBreakdown` to show shimmer when loading
+- [x] Ensure all components show internal shimmer while loading
+- [x] Verify button loading state and state transitions

@@ -1,0 +1,11 @@
+- [x] **Phase 1: User Management Refinement**
+- [x] **Phase 2: Sell Requests Refinement**
+    - [x] Update `AppBar` for `SellRequestsView` (Title, Subtitle, Back button)
+    - [x] Remove redundant header and breadcrumbs from body
+    - [x] Reposition toggle tabs to persistent filter area
+    - [x] Implement dual-axis scrolling with `Scrollbar`
+    - [x] Implement modern blinking skeleton loading animation
+    - [x] Ensure keyboard responsiveness and clean up imports
+- [x] **Phase 3: Verification**
+    - [x] Run `flutter analyze`
+    - [x] Manual test on both pages

@@ -1,0 +1,6 @@
+- [x] Update `GiftController` with validation logic and ₹2,00,000 limit
+- [x] Refactor `GiftGoldView` for 100% responsiveness and compact occasion selector
+- [x] Add error messaging and keyboard handling to the UI
+- [x] Fix "Next: Recipient" button reactivity and clickable state
+- [x] Optimize vertical spacing and refined UI compactness
+- [x] Verify calculations and responsiveness

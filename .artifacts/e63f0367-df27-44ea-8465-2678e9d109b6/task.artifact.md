@@ -1,0 +1,6 @@
+- [x] Add `personalInformation` route to `Routes`
+- [x] Register `PersonalInformationView` in `AppPages`
+- [x] Update `ProfileController` with `isEditing` and validation logic
+- [x] Create `PersonalInformationView` with View/Edit modes and responsive UI
+- [x] Update `ProfileView` to navigate to the new page and remove old BottomSheet
+- [x] Verify functionality and UI/UX

@@ -1,0 +1,4 @@
+- [x] Implement 2s loading and auto-drawer in `CoinCard`
+- [x] Fix "Popular" badge and UI bugs in `CoinCard`
+- [x] Refine `GoldCoinsView` responsiveness and tabs
+- [x] Verify everything with `flutter analyze`

@@ -1,0 +1,5 @@
+- [x] Update `MetalPurchaseSession` to handle both camelCase and snake_case keys
+- [x] Update `RazorpayOrder` with null-safe parsing and casing fixes
+- [x] Fix `PurchaseRemoteDataSource` to extract nested order object
+- [x] Run `flutter analyze`
+- [ ] Verify full payment flow logic

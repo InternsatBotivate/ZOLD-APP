@@ -1,0 +1,8 @@
+- [x] Enhance loading shimmer with "Gold Blink" effect
+    - [x] Update `_ShimmerWrapper` to support metal-themed colors
+    - [x] Update `_buildShimmerSkeleton` to accept `isGold`
+    - [x] Pass `isGold` to `_buildShimmerSkeleton` in `_buildInfoCard`
+    - [x] Pass `isGold` to `_buildShimmerSkeleton` in `_buildPriceBreakdown`
+    - [x] Pass `isGold` to `_buildShimmerSkeleton` in `_buildLiveRateCard`
+- [x] Verify visibility in both light and dark modes
+- [x] Create walkthrough artifact

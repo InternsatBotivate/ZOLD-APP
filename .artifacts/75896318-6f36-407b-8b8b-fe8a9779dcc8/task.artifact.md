@@ -1,0 +1,20 @@
+- [ ] Core Theme Updates
+    - [ ] Update `app_colors.dart` with dark mode palette from Next.js
+    - [ ] Update `app_theme.dart` with refined dark mode specifications
+- [ ] Buy/Sell Module Updates
+    - [ ] Update background gradients in `buy_sell_view.dart`
+    - [ ] Theme cards (Live Rate, Price Breakdown, Purity)
+    - [ ] Refine input fields and presets
+- [ ] Wallet & Portfolio Updates
+    - [ ] Update `wallet_view.dart` header and glassmorphism
+    - [ ] Theme metal holdings cards
+    - [ ] Update active deliveries and transaction list
+- [ ] Goals Module Updates
+    - [ ] Update `goals_view.dart` background and cards
+    - [ ] Theme goal details and create goal screens
+- [ ] SIP Module Updates
+    - [ ] Update `sip_view.dart` header and banners
+    - [ ] Theme available plans and active SIP cards
+- [ ] Verification
+    - [ ] Run `flutter analyze`
+    - [ ] Verify light/dark mode consistency

@@ -1,0 +1,8 @@
+- `[x]` Fix AppBar responsiveness and logo alignment in `CoinCheckoutView`
+    - `[x]` Set `leadingWidth: 40` to remove empty space around the back arrow
+    - `[x]` Remove `IconButton` padding and constraints for "zero gap" look
+    - `[x]` Implement `FittedBox` and `Flexible` for title responsiveness
+- `[x]` Enhance `CoinCheckoutView` UX
+    - `[x]` Add keyboard dismissal via `GestureDetector`
+    - `[x]` Add `Scrollbar` and `keyboardDismissBehavior: onDrag`
+- `[x]` Verify alignment matches the home page style

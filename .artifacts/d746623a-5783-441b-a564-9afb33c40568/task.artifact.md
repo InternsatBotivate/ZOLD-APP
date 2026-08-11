@@ -1,0 +1,10 @@
+- `[x]` Fix OnboardingView responsiveness
+- `[x]` Fix Auth screens (Login, Signup, OTP) and AuthBackground keyboard handling
+- `[x]` Fix HomeView responsive issues (Quick Actions, Cards)
+- `[x]` Fix BuySellView responsive and keyboard issues
+- `[x]` Fix WalletView responsive issues
+- `[x]` Fix SIPView responsive and keyboard issues
+- `[x]` Fix GoalsView and CreateGoalView responsive and keyboard issues
+- `[x]` Fix KYCView responsive and keyboard issues
+- `[x]` Fix ProfileView keyboard issues (Bottom Sheets)
+- `[x]` Run flutter analyze and fix issues

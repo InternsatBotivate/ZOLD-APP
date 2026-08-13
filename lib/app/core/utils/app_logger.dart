@@ -65,12 +65,16 @@ class AppLogger {
   static Map<String, dynamic> filterMap(Map<String, dynamic> data) {
     final Map<String, dynamic> filtered = Map.from(data);
     filtered.forEach((key, value) {
-      if (_sensitiveKeys.any((sk) => key.toLowerCase().contains(sk.toLowerCase()))) {
+      if (_sensitiveKeys.any(
+        (sk) => key.toLowerCase().contains(sk.toLowerCase()),
+      )) {
         filtered[key] = '[MASKED]';
       } else if (value is Map<String, dynamic>) {
         filtered[key] = filterMap(value);
       } else if (value is List) {
-        filtered[key] = value.map((e) => e is Map<String, dynamic> ? filterMap(e) : e).toList();
+        filtered[key] = value
+            .map((e) => e is Map<String, dynamic> ? filterMap(e) : e)
+            .toList();
       }
     });
     return filtered;

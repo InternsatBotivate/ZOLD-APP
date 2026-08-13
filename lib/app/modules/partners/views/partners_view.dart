@@ -1238,7 +1238,8 @@ class PartnersView extends GetView<PartnersController> {
                                         label: 'Partner Name *',
                                         hint: 'e.g. Golden Jewellers',
                                         icon: Icons.business,
-                                        validator: (v) => v!.isEmpty ? 'Required' : null,
+                                        validator: (v) =>
+                                            v!.isEmpty ? 'Required' : null,
                                       ),
                                     ),
                                     const SizedBox(width: 16),
@@ -1249,8 +1250,12 @@ class PartnersView extends GetView<PartnersController> {
                                         label: 'Email Address *',
                                         hint: 'e.g. partner@example.com',
                                         icon: Icons.email_outlined,
-                                        keyboardType: TextInputType.emailAddress,
-                                        validator: (v) => GetUtils.isEmail(v ?? '') ? null : 'Invalid email',
+                                        keyboardType:
+                                            TextInputType.emailAddress,
+                                        validator: (v) =>
+                                            GetUtils.isEmail(v ?? '')
+                                            ? null
+                                            : 'Invalid email',
                                       ),
                                     ),
                                   ],
@@ -1267,18 +1272,22 @@ class PartnersView extends GetView<PartnersController> {
                                         hint: 'e.g. +91 975431****',
                                         icon: Icons.phone_outlined,
                                         keyboardType: TextInputType.phone,
-                                        validator: (v) => (v?.length ?? 0) < 10 ? 'Invalid phone' : null,
+                                        validator: (v) => (v?.length ?? 0) < 10
+                                            ? 'Invalid phone'
+                                            : null,
                                       ),
                                     ),
                                     const SizedBox(width: 16),
                                     Expanded(
                                       child: _buildModernTextField(
                                         context,
-                                        controller: controller.usernameController,
+                                        controller:
+                                            controller.usernameController,
                                         label: 'Username *',
                                         hint: 'e.g. golden_partner',
                                         icon: Icons.person_outline,
-                                        validator: (v) => v!.isEmpty ? 'Required' : null,
+                                        validator: (v) =>
+                                            v!.isEmpty ? 'Required' : null,
                                       ),
                                     ),
                                   ],
@@ -1294,7 +1303,8 @@ class PartnersView extends GetView<PartnersController> {
                                 label: 'Partner Name *',
                                 hint: 'e.g. Golden Jewellers',
                                 icon: Icons.business,
-                                validator: (v) => v!.isEmpty ? 'Required' : null,
+                                validator: (v) =>
+                                    v!.isEmpty ? 'Required' : null,
                               ),
                               const SizedBox(height: 16),
                               _buildModernTextField(
@@ -1304,7 +1314,9 @@ class PartnersView extends GetView<PartnersController> {
                                 hint: 'e.g. partner@example.com',
                                 icon: Icons.email_outlined,
                                 keyboardType: TextInputType.emailAddress,
-                                validator: (v) => GetUtils.isEmail(v ?? '') ? null : 'Invalid email',
+                                validator: (v) => GetUtils.isEmail(v ?? '')
+                                    ? null
+                                    : 'Invalid email',
                               ),
                               const SizedBox(height: 16),
                               _buildModernTextField(
@@ -1314,7 +1326,9 @@ class PartnersView extends GetView<PartnersController> {
                                 hint: 'e.g. +91 975431****',
                                 icon: Icons.phone_outlined,
                                 keyboardType: TextInputType.phone,
-                                validator: (v) => (v?.length ?? 0) < 10 ? 'Invalid phone' : null,
+                                validator: (v) => (v?.length ?? 0) < 10
+                                    ? 'Invalid phone'
+                                    : null,
                               ),
                               const SizedBox(height: 16),
                               _buildModernTextField(
@@ -1323,7 +1337,8 @@ class PartnersView extends GetView<PartnersController> {
                                 label: 'Username *',
                                 hint: 'e.g. golden_partner',
                                 icon: Icons.person_outline,
-                                validator: (v) => v!.isEmpty ? 'Required' : null,
+                                validator: (v) =>
+                                    v!.isEmpty ? 'Required' : null,
                               ),
                             ],
                           );
@@ -1337,7 +1352,8 @@ class PartnersView extends GetView<PartnersController> {
                         hint: '••••@12•',
                         icon: Icons.lock_outline,
                         obscureText: true,
-                        validator: (v) => (v?.length ?? 0) < 6 ? 'Min 6 chars' : null,
+                        validator: (v) =>
+                            (v?.length ?? 0) < 6 ? 'Min 6 chars' : null,
                       ),
                       const SizedBox(height: 32),
                       Row(
@@ -1346,7 +1362,9 @@ class PartnersView extends GetView<PartnersController> {
                             child: OutlinedButton(
                               onPressed: () => Get.back(),
                               style: OutlinedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(vertical: 16),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 16,
+                                ),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
@@ -1363,16 +1381,24 @@ class PartnersView extends GetView<PartnersController> {
                           ),
                           const SizedBox(width: 12),
                           Expanded(
-                            child: Obx(() => _buildActionButton(
-                              context,
-                              'Create Partner',
-                              isPrimary: true,
-                              onTap: controller.isLoading.value ? null : () {
-                                if (controller.addPartnerFormKey.currentState?.validate() ?? false) {
-                                  controller.registerPartner();
-                                }
-                              },
-                            )),
+                            child: Obx(
+                              () => _buildActionButton(
+                                context,
+                                'Create Partner',
+                                isPrimary: true,
+                                onTap: controller.isLoading.value
+                                    ? null
+                                    : () {
+                                        if (controller
+                                                .addPartnerFormKey
+                                                .currentState
+                                                ?.validate() ??
+                                            false) {
+                                          controller.registerPartner();
+                                        }
+                                      },
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -1546,18 +1572,21 @@ class PartnersView extends GetView<PartnersController> {
                                         label: 'Business Name',
                                         hint: 'e.g. Golden Jewellers',
                                         icon: Icons.business,
-                                        validator: (v) => v!.isEmpty ? 'Required' : null,
+                                        validator: (v) =>
+                                            v!.isEmpty ? 'Required' : null,
                                       ),
                                     ),
                                     const SizedBox(width: 16),
                                     Expanded(
                                       child: _buildModernTextField(
                                         context,
-                                        controller: controller.ownerNameController,
+                                        controller:
+                                            controller.ownerNameController,
                                         label: 'Owner Name',
                                         hint: 'Full Name',
                                         icon: Icons.person_outline,
-                                        validator: (v) => v!.isEmpty ? 'Required' : null,
+                                        validator: (v) =>
+                                            v!.isEmpty ? 'Required' : null,
                                       ),
                                     ),
                                   ],
@@ -1573,7 +1602,8 @@ class PartnersView extends GetView<PartnersController> {
                                         label: 'Area',
                                         hint: 'e.g. Civil Lines',
                                         icon: Icons.map_outlined,
-                                        validator: (v) => v!.isEmpty ? 'Required' : null,
+                                        validator: (v) =>
+                                            v!.isEmpty ? 'Required' : null,
                                       ),
                                     ),
                                     const SizedBox(width: 16),
@@ -1584,7 +1614,8 @@ class PartnersView extends GetView<PartnersController> {
                                         label: 'City',
                                         hint: 'e.g. Raipur',
                                         icon: Icons.location_city,
-                                        validator: (v) => v!.isEmpty ? 'Required' : null,
+                                        validator: (v) =>
+                                            v!.isEmpty ? 'Required' : null,
                                       ),
                                     ),
                                   ],
@@ -1596,23 +1627,28 @@ class PartnersView extends GetView<PartnersController> {
                                     Expanded(
                                       child: _buildModernTextField(
                                         context,
-                                        controller: controller.pincodeController,
+                                        controller:
+                                            controller.pincodeController,
                                         label: 'Pincode',
                                         hint: '492001',
                                         icon: Icons.pin_drop_outlined,
                                         keyboardType: TextInputType.number,
-                                        validator: (v) => (v?.length ?? 0) != 6 ? 'Invalid pincode' : null,
+                                        validator: (v) => (v?.length ?? 0) != 6
+                                            ? 'Invalid pincode'
+                                            : null,
                                       ),
                                     ),
                                     const SizedBox(width: 16),
                                     Expanded(
                                       child: _buildModernTextField(
                                         context,
-                                        controller: controller.timingsController,
+                                        controller:
+                                            controller.timingsController,
                                         label: 'Business Timings',
                                         hint: 'e.g. 10:00 AM - 08:00 PM',
                                         icon: Icons.access_time,
-                                        validator: (v) => v!.isEmpty ? 'Required' : null,
+                                        validator: (v) =>
+                                            v!.isEmpty ? 'Required' : null,
                                       ),
                                     ),
                                   ],
@@ -1628,7 +1664,8 @@ class PartnersView extends GetView<PartnersController> {
                                 label: 'Business Name',
                                 hint: 'e.g. Golden Jewellers',
                                 icon: Icons.business,
-                                validator: (v) => v!.isEmpty ? 'Required' : null,
+                                validator: (v) =>
+                                    v!.isEmpty ? 'Required' : null,
                               ),
                               const SizedBox(height: 16),
                               _buildModernTextField(
@@ -1637,7 +1674,8 @@ class PartnersView extends GetView<PartnersController> {
                                 label: 'Owner Name',
                                 hint: 'Full Name',
                                 icon: Icons.person_outline,
-                                validator: (v) => v!.isEmpty ? 'Required' : null,
+                                validator: (v) =>
+                                    v!.isEmpty ? 'Required' : null,
                               ),
                               const SizedBox(height: 16),
                               _buildModernTextField(
@@ -1646,7 +1684,8 @@ class PartnersView extends GetView<PartnersController> {
                                 label: 'Area',
                                 hint: 'e.g. Civil Lines',
                                 icon: Icons.map_outlined,
-                                validator: (v) => v!.isEmpty ? 'Required' : null,
+                                validator: (v) =>
+                                    v!.isEmpty ? 'Required' : null,
                               ),
                               const SizedBox(height: 16),
                               _buildModernTextField(
@@ -1655,7 +1694,8 @@ class PartnersView extends GetView<PartnersController> {
                                 label: 'City',
                                 hint: 'e.g. Raipur',
                                 icon: Icons.location_city,
-                                validator: (v) => v!.isEmpty ? 'Required' : null,
+                                validator: (v) =>
+                                    v!.isEmpty ? 'Required' : null,
                               ),
                               const SizedBox(height: 16),
                               _buildModernTextField(
@@ -1665,7 +1705,9 @@ class PartnersView extends GetView<PartnersController> {
                                 hint: '492001',
                                 icon: Icons.pin_drop_outlined,
                                 keyboardType: TextInputType.number,
-                                validator: (v) => (v?.length ?? 0) != 6 ? 'Invalid pincode' : null,
+                                validator: (v) => (v?.length ?? 0) != 6
+                                    ? 'Invalid pincode'
+                                    : null,
                               ),
                               const SizedBox(height: 16),
                               _buildModernTextField(
@@ -1674,7 +1716,8 @@ class PartnersView extends GetView<PartnersController> {
                                 label: 'Business Timings',
                                 hint: 'e.g. 10:00 AM - 08:00 PM',
                                 icon: Icons.access_time,
-                                validator: (v) => v!.isEmpty ? 'Required' : null,
+                                validator: (v) =>
+                                    v!.isEmpty ? 'Required' : null,
                               ),
                             ],
                           );
@@ -1712,7 +1755,9 @@ class PartnersView extends GetView<PartnersController> {
                                 ? null
                                 : [
                                     BoxShadow(
-                                      color: Colors.black.withValues(alpha: 0.05),
+                                      color: Colors.black.withValues(
+                                        alpha: 0.05,
+                                      ),
                                       blurRadius: 10,
                                       offset: const Offset(0, 4),
                                     ),
@@ -1721,14 +1766,18 @@ class PartnersView extends GetView<PartnersController> {
                           child: DropdownButtonFormField<String>(
                             initialValue: controller.servicesOffers.value,
                             dropdownColor: theme.colorScheme.surface,
-                            style: TextStyle(color: theme.colorScheme.onSurface),
+                            style: TextStyle(
+                              color: theme.colorScheme.onSurface,
+                            ),
                             decoration: const InputDecoration(
                               border: InputBorder.none,
                             ),
                             items: ['JEWELLERY', 'PICKUP', 'LOAN']
                                 .map(
-                                  (s) =>
-                                      DropdownMenuItem(value: s, child: Text(s)),
+                                  (s) => DropdownMenuItem(
+                                    value: s,
+                                    child: Text(s),
+                                  ),
                                 )
                                 .toList(),
                             onChanged: (val) {
@@ -1746,7 +1795,9 @@ class PartnersView extends GetView<PartnersController> {
                             child: OutlinedButton(
                               onPressed: () => Get.back(),
                               style: OutlinedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(vertical: 16),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 16,
+                                ),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
@@ -1763,35 +1814,50 @@ class PartnersView extends GetView<PartnersController> {
                           ),
                           const SizedBox(width: 12),
                           Expanded(
-                            child: Obx(() => ElevatedButton(
-                              onPressed: controller.isLoading.value ? null : () {
-                                if (controller.completeProfileFormKey.currentState?.validate() ?? false) {
-                                  controller.updatePartnerDetails();
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: isDark
-                                    ? theme.colorScheme.primary
-                                    : const Color(0xFF3D3066),
-                                foregroundColor: isDark
-                                    ? Colors.black
-                                    : Colors.white,
-                                padding: const EdgeInsets.symmetric(vertical: 16),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                              child: controller.isLoading.value
-                                ? const SizedBox(
-                                    height: 20,
-                                    width: 20,
-                                    child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
-                                  )
-                                : const Text(
-                                    'Complete Profile',
-                                    style: TextStyle(fontWeight: FontWeight.bold),
+                            child: Obx(
+                              () => ElevatedButton(
+                                onPressed: controller.isLoading.value
+                                    ? null
+                                    : () {
+                                        if (controller
+                                                .completeProfileFormKey
+                                                .currentState
+                                                ?.validate() ??
+                                            false) {
+                                          controller.updatePartnerDetails();
+                                        }
+                                      },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: isDark
+                                      ? theme.colorScheme.primary
+                                      : const Color(0xFF3D3066),
+                                  foregroundColor: isDark
+                                      ? Colors.black
+                                      : Colors.white,
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 16,
                                   ),
-                            )),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                                child: controller.isLoading.value
+                                    ? const SizedBox(
+                                        height: 20,
+                                        width: 20,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          color: Colors.white,
+                                        ),
+                                      )
+                                    : const Text(
+                                        'Complete Profile',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                              ),
+                            ),
                           ),
                         ],
                       ),

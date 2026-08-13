@@ -12,6 +12,7 @@ class OnboardingView extends GetView<OnboardingController> {
     final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
+      backgroundColor: isDark ? AppColors.backgroundDark : AppColors.backgroundLight,
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -19,9 +20,9 @@ class OnboardingView extends GetView<OnboardingController> {
             end: Alignment.bottomRight,
             colors: isDark
                 ? [
-                    theme.scaffoldBackgroundColor,
-                    theme.colorScheme.surfaceContainerHighest,
-                    theme.colorScheme.surface,
+                    const Color(0xFF09090B),
+                    const Color(0xFF18181B),
+                    const Color(0xFF09090B),
                   ]
                 : [
                     AppColors.authGradientStart,

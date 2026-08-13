@@ -55,38 +55,73 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
 
   @override
   Future<BaseResponse<List<PaymentMethod>>> getPaymentMethods() async {
-    final response = await _dio.get('/payment-methods');
-    return BaseResponse.fromJson(
-      response.data,
-      (json) => (json as List).map((e) => PaymentMethod.fromJson(e)).toList(),
-    );
+    try {
+      final response = await _dio.get('/payment-methods');
+      return BaseResponse.fromJson(
+        response.data,
+        (json) => (json as List).map((e) => PaymentMethod.fromJson(e)).toList(),
+      );
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        return BaseResponse(success: true, data: [], message: 'Not found');
+      }
+      rethrow;
+    }
   }
 
   @override
   Future<BaseResponse<void>> addPaymentMethod(PaymentMethod method) async {
-    final response = await _dio.post('/payment-methods', data: method.toJson());
-    return BaseResponse.fromJson(response.data, (_) {});
+    try {
+      final response = await _dio.post('/payment-methods', data: method.toJson());
+      return BaseResponse.fromJson(response.data, (_) {});
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        return BaseResponse(success: false, message: 'Endpoint not found');
+      }
+      rethrow;
+    }
   }
 
   @override
   Future<BaseResponse<void>> deletePaymentMethod(String id) async {
-    final response = await _dio.delete('/payment-methods/$id');
-    return BaseResponse.fromJson(response.data, (_) {});
+    try {
+      final response = await _dio.delete('/payment-methods/$id');
+      return BaseResponse.fromJson(response.data, (_) {});
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        return BaseResponse(success: false, message: 'Endpoint not found');
+      }
+      rethrow;
+    }
   }
 
   @override
   Future<BaseResponse<void>> setPrimaryPaymentMethod(String id) async {
-    final response = await _dio.put('/payment-methods/$id/set-primary');
-    return BaseResponse.fromJson(response.data, (_) {});
+    try {
+      final response = await _dio.put('/payment-methods/$id/set-primary');
+      return BaseResponse.fromJson(response.data, (_) {});
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        return BaseResponse(success: false, message: 'Endpoint not found');
+      }
+      rethrow;
+    }
   }
 
   @override
   Future<BaseResponse<List<BankAccount>>> getBankAccounts() async {
-    final response = await _dio.get('/bank-accounts');
-    return BaseResponse.fromJson(
-      response.data,
-      (json) => (json as List).map((e) => BankAccount.fromJson(e)).toList(),
-    );
+    try {
+      final response = await _dio.get('/bank-accounts');
+      return BaseResponse.fromJson(
+        response.data,
+        (json) => (json as List).map((e) => BankAccount.fromJson(e)).toList(),
+      );
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        return BaseResponse(success: true, data: [], message: 'Not found');
+      }
+      rethrow;
+    }
   }
 
   @override
@@ -124,105 +159,202 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
 
   @override
   Future<BaseResponse<List<Address>>> getAddresses() async {
-    final response = await _dio.get('/saved-addresses');
-    return BaseResponse.fromJson(
-      response.data,
-      (json) => (json as List).map((e) => Address.fromJson(e)).toList(),
-    );
+    try {
+      final response = await _dio.get('/saved-addresses');
+      return BaseResponse.fromJson(
+        response.data,
+        (json) => (json as List).map((e) => Address.fromJson(e)).toList(),
+      );
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        return BaseResponse(success: true, data: [], message: 'Not found');
+      }
+      rethrow;
+    }
   }
 
   @override
   Future<BaseResponse<Address>> addAddress(Address address) async {
-    final response = await _dio.post(
-      '/saved-addresses',
-      data: address.toJson(),
-    );
-    return BaseResponse.fromJson(
-      response.data,
-      (json) => Address.fromJson(json as Map<String, dynamic>),
-    );
+    try {
+      final response = await _dio.post(
+        '/saved-addresses',
+        data: address.toJson(),
+      );
+      return BaseResponse.fromJson(
+        response.data,
+        (json) => Address.fromJson(json as Map<String, dynamic>),
+      );
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        return BaseResponse(success: false, message: 'Endpoint not found');
+      }
+      rethrow;
+    }
   }
 
   @override
   Future<BaseResponse<void>> updateAddress(String id, Address address) async {
-    final response = await _dio.put(
-      '/saved-addresses/$id',
-      data: address.toJson(),
-    );
-    return BaseResponse.fromJson(response.data, (_) {});
+    try {
+      final response = await _dio.put(
+        '/saved-addresses/$id',
+        data: address.toJson(),
+      );
+      return BaseResponse.fromJson(response.data, (_) {});
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        return BaseResponse(success: false, message: 'Endpoint not found');
+      }
+      rethrow;
+    }
   }
 
   @override
   Future<BaseResponse<void>> deleteAddress(String id) async {
-    final response = await _dio.delete('/saved-addresses/$id');
-    return BaseResponse.fromJson(response.data, (_) {});
+    try {
+      final response = await _dio.delete('/saved-addresses/$id');
+      return BaseResponse.fromJson(response.data, (_) {});
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        return BaseResponse(success: false, message: 'Endpoint not found');
+      }
+      rethrow;
+    }
   }
 
   @override
   Future<BaseResponse<void>> setPrimaryAddress(String id) async {
-    final response = await _dio.put('/saved-addresses/$id/set-primary');
-    return BaseResponse.fromJson(response.data, (_) {});
+    try {
+      final response = await _dio.put('/saved-addresses/$id/set-primary');
+      return BaseResponse.fromJson(response.data, (_) {});
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        return BaseResponse(success: false, message: 'Endpoint not found');
+      }
+      rethrow;
+    }
   }
 
   @override
   Future<BaseResponse<List<UserSession>>> getSessions() async {
-    final response = await _dio.get('/sessions');
-    return BaseResponse.fromJson(
-      response.data,
-      (json) => (json as List).map((e) => UserSession.fromJson(e)).toList(),
-    );
+    try {
+      final response = await _dio.get('/sessions');
+      return BaseResponse.fromJson(
+        response.data,
+        (json) => (json as List).map((e) => UserSession.fromJson(e)).toList(),
+      );
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        return BaseResponse(success: true, data: [], message: 'Not found');
+      }
+      rethrow;
+    }
   }
 
   @override
   Future<BaseResponse<void>> revokeSession(String id) async {
-    final response = await _dio.delete('/sessions/$id');
-    return BaseResponse.fromJson(response.data, (_) {});
+    try {
+      final response = await _dio.delete('/sessions/$id');
+      return BaseResponse.fromJson(response.data, (_) {});
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        return BaseResponse(success: false, message: 'Endpoint not found');
+      }
+      rethrow;
+    }
   }
 
   @override
   Future<BaseResponse<void>> revokeAllSessions() async {
-    final response = await _dio.post('/sessions/revoke-all');
-    return BaseResponse.fromJson(response.data, (_) {});
+    try {
+      final response = await _dio.post('/sessions/revoke-all');
+      return BaseResponse.fromJson(response.data, (_) {});
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        return BaseResponse(success: false, message: 'Endpoint not found');
+      }
+      rethrow;
+    }
   }
 
   @override
   Future<BaseResponse<SecuritySettings>> getSecuritySettings() async {
-    final response = await _dio.get('/sessions/security-settings');
-    return BaseResponse.fromJson(
-      response.data,
-      (json) => SecuritySettings.fromJson(json as Map<String, dynamic>),
-    );
+    try {
+      final response = await _dio.get('/sessions/security-settings');
+      return BaseResponse.fromJson(
+        response.data,
+        (json) => SecuritySettings.fromJson(json as Map<String, dynamic>),
+      );
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        return BaseResponse(
+          success: true,
+          data: SecuritySettings(
+            twoFactorEnabled: false,
+            dataSharing: false,
+            profileVisibility: 'contacts',
+            readReceipts: true,
+          ),
+          message: 'Not found',
+        );
+      }
+      rethrow;
+    }
   }
 
   @override
   Future<BaseResponse<void>> updateSecuritySettings(
     SecuritySettings settings,
   ) async {
-    final response = await _dio.put(
-      '/sessions/security-settings',
-      data: settings.toJson(),
-    );
-    return BaseResponse.fromJson(response.data, (_) {});
+    try {
+      final response = await _dio.put(
+        '/sessions/security-settings',
+        data: settings.toJson(),
+      );
+      return BaseResponse.fromJson(response.data, (_) {});
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        return BaseResponse(success: false, message: 'Endpoint not found');
+      }
+      rethrow;
+    }
   }
 
   @override
   Future<BaseResponse<NotificationSettings>> getNotificationSettings() async {
-    final response = await _dio.get('/profile/notification-settings');
-    return BaseResponse.fromJson(
-      response.data,
-      (json) => NotificationSettings.fromJson(json as Map<String, dynamic>),
-    );
+    try {
+      final response = await _dio.get('/profile/notification-settings');
+      return BaseResponse.fromJson(
+        response.data,
+        (json) => NotificationSettings.fromJson(json as Map<String, dynamic>),
+      );
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        return BaseResponse(
+          success: true,
+          data: NotificationSettings(),
+          message: 'Not found',
+        );
+      }
+      rethrow;
+    }
   }
 
   @override
   Future<BaseResponse<void>> updateNotificationSettings(
     NotificationSettings settings,
   ) async {
-    final response = await _dio.put(
-      '/profile/notification-settings',
-      data: settings.toJson(),
-    );
-    return BaseResponse.fromJson(response.data, (_) {});
+    try {
+      final response = await _dio.put(
+        '/profile/notification-settings',
+        data: settings.toJson(),
+      );
+      return BaseResponse.fromJson(response.data, (_) {});
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        return BaseResponse(success: false, message: 'Endpoint not found');
+      }
+      rethrow;
+    }
   }
 
   @override

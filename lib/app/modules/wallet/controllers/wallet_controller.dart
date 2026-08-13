@@ -65,7 +65,9 @@ class WalletController extends GetxController {
 
       final transactionResponse = results[3] as dynamic;
       if (transactionResponse.success && transactionResponse.data != null) {
-        coinTransactions.value = List<CoinTransaction>.from(transactionResponse.data);
+        coinTransactions.value = List<CoinTransaction>.from(
+          transactionResponse.data,
+        );
       } else {
         coinTransactions.clear();
       }

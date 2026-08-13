@@ -1748,7 +1748,9 @@ class GiftGoldView extends GetView<GiftController> {
             Expanded(
               child: _buildGradientButton(context, 'Next', () {
                 if (controller.lookupResult.value == null) {
-                  SnackbarUtils.showError('Please select a registered ZOLD user');
+                  SnackbarUtils.showError(
+                    'Please select a registered ZOLD user',
+                  );
                   return;
                 }
                 controller.step.value = 'message';

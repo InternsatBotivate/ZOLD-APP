@@ -42,7 +42,9 @@ class OTPVerificationController extends GetxController {
           VerifyOtpRequest(email: email, otp: otpController.text),
         );
         if (response.success) {
-          SnackbarUtils.showSuccess('Email verified successfully! Please login.');
+          SnackbarUtils.showSuccess(
+            'Email verified successfully! Please login.',
+          );
           Get.offAllNamed(Routes.login);
         } else {
           errorMessage.value = response.message ?? 'Invalid OTP';

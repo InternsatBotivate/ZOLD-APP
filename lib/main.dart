@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:zold_gold/app/core/theme/app_theme.dart';
 import 'package:zold_gold/app/routes/app_pages.dart';
+import 'package:zold_gold/app/core/constants/api_constants.dart';
 import 'package:zold_gold/app/core/network/dio_client.dart';
 import 'package:zold_gold/app/data/datasources/auth_remote_datasource.dart';
 import 'package:zold_gold/app/data/datasources/profile_remote_datasource.dart';
@@ -31,29 +32,63 @@ void main() {
         // 1. Load Environment Variables FIRST
         try {
           await dotenv.load(fileName: ".env");
+          AppLogger.i('dotenv loaded. BASE_URL: ${ApiConstants.baseUrl}');
+          if (ApiConstants.baseUrl.isEmpty) {
+            AppLogger.e('CRITICAL: BASE_URL is empty in .env');
+          }
         } catch (e) {
           AppLogger.e('dotenv load failed: $e');
         }
 
         // 2. Initialize Essential Services and Repositories early and ALWAYS
         Get.put(ThemeService(), permanent: true);
-        
+
         // Network - DioClient now safely gets baseUrl from ApiConstants
         final dio = DioClient().dio;
         Get.put<Dio>(dio, permanent: true);
 
         // DataSources
-        Get.put<AuthRemoteDataSource>(AuthRemoteDataSourceImpl(Get.find<Dio>()), permanent: true);
-        Get.put<ProfileRemoteDataSource>(ProfileRemoteDataSourceImpl(Get.find<Dio>()), permanent: true);
-        Get.put<NotificationLocalDataSource>(NotificationLocalDataSourceImpl(), permanent: true);
-        Get.put<AdminRemoteDataSource>(AdminRemoteDataSourceImpl(Get.find<Dio>()), permanent: true);
-        Get.put<PurchaseRemoteDataSource>(PurchaseRemoteDataSourceImpl(Get.find<Dio>()), permanent: true);
+        Get.put<AuthRemoteDataSource>(
+          AuthRemoteDataSourceImpl(Get.find<Dio>()),
+          permanent: true,
+        );
+        Get.put<ProfileRemoteDataSource>(
+          ProfileRemoteDataSourceImpl(Get.find<Dio>()),
+          permanent: true,
+        );
+        Get.put<NotificationLocalDataSource>(
+          NotificationLocalDataSourceImpl(),
+          permanent: true,
+        );
+        Get.put<AdminRemoteDataSource>(
+          AdminRemoteDataSourceImpl(Get.find<Dio>()),
+          permanent: true,
+        );
+        Get.put<PurchaseRemoteDataSource>(
+          PurchaseRemoteDataSourceImpl(Get.find<Dio>()),
+          permanent: true,
+        );
 
         // Repositories
-        Get.put<AuthRepository>(AuthRepositoryImpl(Get.find<AuthRemoteDataSource>()), permanent: true);
-        Get.put<ProfileRepository>(ProfileRepositoryImpl(Get.find<ProfileRemoteDataSource>(), Get.find<NotificationLocalDataSource>()), permanent: true);
-        Get.put<AdminRepository>(AdminRepositoryImpl(Get.find<AdminRemoteDataSource>()), permanent: true);
-        Get.put<PurchaseRepository>(PurchaseRepositoryImpl(Get.find<PurchaseRemoteDataSource>()), permanent: true);
+        Get.put<AuthRepository>(
+          AuthRepositoryImpl(Get.find<AuthRemoteDataSource>()),
+          permanent: true,
+        );
+        Get.put<ProfileRepository>(
+          ProfileRepositoryImpl(
+            Get.find<ProfileRemoteDataSource>(),
+            Get.find<NotificationLocalDataSource>(),
+          ),
+          permanent: true,
+        );
+        Get.put<AdminRepository>(
+          AdminRepositoryImpl(Get.find<AdminRemoteDataSource>()),
+          permanent: true,
+        );
+        Get.put<PurchaseRepository>(
+          PurchaseRepositoryImpl(Get.find<PurchaseRemoteDataSource>()),
+          permanent: true,
+        );
 
         // Services
         Get.put(AuthService(), permanent: true);
@@ -69,7 +104,11 @@ void main() {
         // Configure Flutter error handling
         FlutterError.onError = (FlutterErrorDetails details) {
           FlutterError.presentError(details);
-          AppLogger.e('FLUTTER ERROR: ${details.exception}', details.exception, details.stack);
+          AppLogger.e(
+            'FLUTTER ERROR: ${details.exception}',
+            details.exception,
+            details.stack,
+          );
         };
 
         PlatformDispatcher.instance.onError = (error, stack) {
@@ -82,15 +121,21 @@ void main() {
           debugPrint(
             '[TRACE] main: Waiting for AuthService and SocketService init',
           );
+          // Run in parallel but allow the app to start even if they take a bit long
+          // We still wait because middleware needs AuthService state
           await Future.wait([
-            AuthService.to.init().timeout(const Duration(seconds: 10)),
-            SocketService.to.init().timeout(const Duration(seconds: 10)),
-          ]);
+            AuthService.to.init().timeout(const Duration(seconds: 5)),
+            SocketService.to.init().timeout(const Duration(seconds: 5)),
+          ]).catchError((e) {
+            debugPrint('Initialization error (continuing anyway): $e');
+            return <GetxService>[];
+          });
+          
           debugPrint(
-            '[TRACE] main: Services initialized. AuthService.lastRoute: ${AuthService.to.lastRoute}',
+            '[TRACE] main: Services initialized or timed out. AuthService.lastRoute: ${AuthService.to.lastRoute}',
           );
         } catch (e) {
-          debugPrint('Initialization warning: $e');
+          debugPrint('Initialization unexpected error: $e');
         }
 
         runApp(const ZoldApp());
@@ -98,27 +143,27 @@ void main() {
       } catch (e, stack) {
         debugPrint('FATAL STARTUP ERROR: $e');
         debugPrint('$stack');
-        
+
         // Ensure absolutely essential services are registered to prevent red screen crashes
-        if (!Get.isRegistered<ThemeService>()) Get.put(ThemeService(), permanent: true);
-        if (!Get.isRegistered<AuthService>()) Get.put(AuthService(), permanent: true);
-        
-        // If AuthRepository is missing, register a fallback to avoid dependency errors in UI
-        if (!Get.isRegistered<AuthRepository>()) {
-          try {
-            final dio = Get.isRegistered<Dio>() ? Get.find<Dio>() : DioClient().dio;
-            final ds = AuthRemoteDataSourceImpl(dio);
-            Get.put<AuthRepository>(AuthRepositoryImpl(ds), permanent: true);
-          } catch (_) {
-            // Ignore nested errors, we just want to avoid the "not found" red screen
-          }
+        if (!Get.isRegistered<ThemeService>()) {
+          Get.put(ThemeService(), permanent: true);
         }
-        
+        if (!Get.isRegistered<AuthService>()) {
+          Get.put(AuthService(), permanent: true);
+        }
+        if (!Get.isRegistered<SocketService>()) {
+          Get.put(SocketService(), permanent: true);
+        }
+
         runApp(const ZoldApp());
       }
     },
     (error, stack) {
       AppLogger.e('UNCAUGHT ASYNC ERROR: $error', error, stack);
+      // Even here, attempt to start the app if not already started
+      try {
+        runApp(const ZoldApp());
+      } catch (_) {}
     },
   );
 }
@@ -128,11 +173,17 @@ class ZoldApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     debugPrint('[TRACE] ZoldApp.build: initialRoute=${AppPages.initial}');
+    
+    // Ensure ThemeService is available
+    final themeMode = Get.isRegistered<ThemeService>() 
+        ? ThemeService.to.themeMode 
+        : ThemeMode.system;
+
     return GetMaterialApp(
       title: 'ZOLD',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeService.to.themeMode,
+      themeMode: themeMode,
       initialRoute: AppPages.initial,
       getPages: AppPages.pages,
       debugShowCheckedModeBanner: false,

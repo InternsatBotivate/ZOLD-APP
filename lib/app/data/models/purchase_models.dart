@@ -40,9 +40,7 @@ class MetalPurchaseSession {
       finalAmount: parseDouble(json['finalAmount'] ?? json['final_amount']),
       gstRate: parseDouble(json['gstRate'] ?? json['gst_rate']),
       status: json['status']?.toString() ?? '',
-      expiresAt: parseDateTime(
-        json['expiresAt'] ?? json['expires_at'],
-      ),
+      expiresAt: parseDateTime(json['expiresAt'] ?? json['expires_at']),
     );
   }
 }

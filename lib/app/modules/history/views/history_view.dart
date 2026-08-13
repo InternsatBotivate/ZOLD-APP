@@ -50,9 +50,7 @@ class HistoryView extends GetView<HistoryController> {
           child: CustomScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             slivers: [
-              SliverToBoxAdapter(
-                child: _buildFilters(context),
-              ),
+              SliverToBoxAdapter(child: _buildFilters(context)),
               Obx(() {
                 if (controller.isLoading.value) {
                   return SliverToBoxAdapter(
@@ -68,18 +66,15 @@ class HistoryView extends GetView<HistoryController> {
                 return SliverPadding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                   sliver: SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 12),
-                          child: _buildTransactionItem(
-                            context,
-                            controller.filteredTransactions[index],
-                          ),
-                        );
-                      },
-                      childCount: controller.filteredTransactions.length,
-                    ),
+                    delegate: SliverChildBuilderDelegate((context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: _buildTransactionItem(
+                          context,
+                          controller.filteredTransactions[index],
+                        ),
+                      );
+                    }, childCount: controller.filteredTransactions.length),
                   ),
                 );
               }),
@@ -199,7 +194,9 @@ class HistoryView extends GetView<HistoryController> {
               : Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isSelected ? AppColors.primaryGold : Theme.of(context).dividerColor,
+            color: isSelected
+                ? AppColors.primaryGold
+                : Theme.of(context).dividerColor,
           ),
           boxShadow: isSelected
               ? [
@@ -460,9 +457,7 @@ class HistoryView extends GetView<HistoryController> {
   }
 
   Widget _buildSkeletonLoader(BuildContext context) {
-    return SingleChildScrollView(
-      child: _buildSkeletonLoaderContent(context),
-    );
+    return SingleChildScrollView(child: _buildSkeletonLoaderContent(context));
   }
 
   Widget _buildSkeletonLoaderContent(BuildContext context) {

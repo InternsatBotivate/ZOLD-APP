@@ -30,7 +30,7 @@ class BuySellView extends GetView<BuySellController> {
           body: Obx(() {
             final session = controller.session.value;
             // Always prioritize backend session data for UI state
-            final isGold = session != null 
+            final isGold = session != null
                 ? session.metalType.toUpperCase() == 'GOLD'
                 : controller.metalType.value == 'GOLD';
             final isBuy = session != null
@@ -376,7 +376,10 @@ class BuySellView extends GetView<BuySellController> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8.0,
+                vertical: 8.0,
+              ),
               child: Row(
                 children: [
                   // Balanced Header: Back button on left, empty space of same size on right
@@ -403,7 +406,9 @@ class BuySellView extends GetView<BuySellController> {
                       ],
                     ),
                   ),
-                  const SizedBox(width: 48), // Spacer to balance the back button
+                  const SizedBox(
+                    width: 48,
+                  ), // Spacer to balance the back button
                 ],
               ),
             ),
@@ -548,7 +553,9 @@ class BuySellView extends GetView<BuySellController> {
                 icon: Icons.account_balance_wallet_outlined,
                 iconColor: accentColor,
                 isSmall: isSmall,
-                isLoading: controller.isLoading.value && controller.currentBalance.value <= 0,
+                isLoading:
+                    controller.isLoading.value &&
+                    controller.currentBalance.value <= 0,
               ),
             ),
             const SizedBox(width: 12),
@@ -565,7 +572,9 @@ class BuySellView extends GetView<BuySellController> {
                 iconColor: Colors.red,
                 showPing: true,
                 isSmall: isSmall,
-                isLoading: controller.isLoading.value && controller.sellPrice.value <= 0,
+                isLoading:
+                    controller.isLoading.value &&
+                    controller.sellPrice.value <= 0,
               ),
             ),
           ],
@@ -633,7 +642,9 @@ class BuySellView extends GetView<BuySellController> {
             ],
           ),
           const SizedBox(height: 4),
-          if (isLoading || (controller.isLoading.value && (value.contains('0') || value.isEmpty)))
+          if (isLoading ||
+              (controller.isLoading.value &&
+                  (value.contains('0') || value.isEmpty)))
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0),
               child: _buildShimmerSkeleton(
@@ -654,7 +665,9 @@ class BuySellView extends GetView<BuySellController> {
               ),
             ),
           const SizedBox(height: 2),
-          if (isLoading || (controller.isLoading.value && (subValue.contains('0') || subValue.isEmpty)))
+          if (isLoading ||
+              (controller.isLoading.value &&
+                  (subValue.contains('0') || subValue.isEmpty)))
             _buildShimmerSkeleton(
               context,
               height: isSmall ? 8 : 10,
@@ -1038,7 +1051,7 @@ class BuySellView extends GetView<BuySellController> {
   Widget _buildPriceBreakdown(BuildContext context, bool isBuy, bool isGold) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    
+
     // Improved high-contrast colors for visibility
     final titleColor = isDark ? Colors.white60 : Colors.black45;
     final labelColor = isDark ? Colors.white70 : Colors.black87;
@@ -1070,13 +1083,28 @@ class BuySellView extends GetView<BuySellController> {
           if (controller.isLoading.value && controller.totalAmount.value <= 0)
             Column(
               children: [
-                _buildShimmerSkeleton(context, height: 14, isGold: isGold, borderRadius: 4),
+                _buildShimmerSkeleton(
+                  context,
+                  height: 14,
+                  isGold: isGold,
+                  borderRadius: 4,
+                ),
                 const SizedBox(height: 12),
-                _buildShimmerSkeleton(context, height: 14, isGold: isGold, borderRadius: 4),
+                _buildShimmerSkeleton(
+                  context,
+                  height: 14,
+                  isGold: isGold,
+                  borderRadius: 4,
+                ),
                 const SizedBox(height: 12),
                 Divider(color: theme.dividerColor),
                 const SizedBox(height: 12),
-                _buildShimmerSkeleton(context, height: 20, isGold: isGold, borderRadius: 6),
+                _buildShimmerSkeleton(
+                  context,
+                  height: 20,
+                  isGold: isGold,
+                  borderRadius: 6,
+                ),
               ],
             )
           else ...[
@@ -1370,7 +1398,7 @@ class BuySellView extends GetView<BuySellController> {
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: isGold 
+          color: isGold
               ? const Color(0xFFE4CD8E).withValues(alpha: 0.3)
               : theme.dividerColor,
         ),
@@ -1397,7 +1425,9 @@ class BuySellView extends GetView<BuySellController> {
                   fontSize: 11,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 0.5,
-                  color: theme.textTheme.bodySmall?.color?.withValues(alpha: 0.7),
+                  color: theme.textTheme.bodySmall?.color?.withValues(
+                    alpha: 0.7,
+                  ),
                 ),
               ),
             ],
@@ -1538,11 +1568,7 @@ class BuySellView extends GetView<BuySellController> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(
-            Icons.access_time,
-            size: 14,
-            color: Color(0xFFC2410C),
-          ),
+          const Icon(Icons.access_time, size: 14, color: Color(0xFFC2410C)),
           const SizedBox(width: 6),
           Text(
             'Valid for ',
@@ -1577,7 +1603,11 @@ class BuySellView extends GetView<BuySellController> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(Icons.verified_user_outlined, size: 20, color: Color(0xFF2563EB)),
+          const Icon(
+            Icons.verified_user_outlined,
+            size: 20,
+            color: Color(0xFF2563EB),
+          ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -1594,10 +1624,7 @@ class BuySellView extends GetView<BuySellController> {
                 const SizedBox(height: 4),
                 const Text(
                   'Choose UPI, card, net banking or wallet in the next step.',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Color(0xFF2563EB),
-                  ),
+                  style: TextStyle(fontSize: 12, color: Color(0xFF2563EB)),
                 ),
               ],
             ),
@@ -1759,7 +1786,7 @@ class BuySellView extends GetView<BuySellController> {
         Container(
           width: double.infinity,
           padding: EdgeInsets.symmetric(
-            horizontal: 24, 
+            horizontal: 24,
             vertical: screenHeight * 0.04, // Responsive vertical padding
           ),
           decoration: BoxDecoration(
@@ -1815,7 +1842,8 @@ class BuySellView extends GetView<BuySellController> {
                         style: const TextStyle(fontWeight: FontWeight.w500),
                       ),
                       TextSpan(
-                        text: '${controller.metalGrams.value.toStringAsFixed(3)}g ',
+                        text:
+                            '${controller.metalGrams.value.toStringAsFixed(3)}g ',
                         style: TextStyle(
                           fontWeight: FontWeight.w900,
                           color: accentColor,
@@ -1834,7 +1862,9 @@ class BuySellView extends GetView<BuySellController> {
                 width: double.infinity,
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  color: isDark ? theme.colorScheme.surfaceContainer : const Color(0xFFF8FAFC),
+                  color: isDark
+                      ? theme.colorScheme.surfaceContainer
+                      : const Color(0xFFF8FAFC),
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(color: theme.dividerColor),
                 ),
@@ -1900,7 +1930,9 @@ class BuySellView extends GetView<BuySellController> {
                               'Funds will be credited to your wallet within 2 working days. We\'ll notify you once processed.',
                               style: TextStyle(
                                 fontSize: 12,
-                                color: const Color(0xFF2563EB).withValues(alpha: 0.8),
+                                color: const Color(
+                                  0xFF2563EB,
+                                ).withValues(alpha: 0.8),
                               ),
                             ),
                           ],
@@ -1931,13 +1963,15 @@ class BuySellView extends GetView<BuySellController> {
                 side: BorderSide(color: theme.dividerColor),
               ),
             ),
-            child: Obx(() => Text(
-              'Back to Home (${controller.redirectCountdown.value}s)',
-              style: TextStyle(
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
-                fontWeight: FontWeight.bold,
+            child: Obx(
+              () => Text(
+                'Back to Home (${controller.redirectCountdown.value}s)',
+                style: TextStyle(
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            )),
+            ),
           ),
         ),
       ],

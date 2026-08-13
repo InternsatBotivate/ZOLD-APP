@@ -54,7 +54,9 @@ class SignupController extends GetxController {
           password: passwordController.text,
           phone: phoneController.text.trim(),
           city: cityController.text.trim(),
-          referralCode: showReferral.value ? referralController.text.trim() : null,
+          referralCode: showReferral.value
+              ? referralController.text.trim()
+              : null,
         ),
       );
 
@@ -125,7 +127,7 @@ class SignupController extends GetxController {
 
   @override
   void onClose() {
-    // Note: Manual disposal of TextEditingControllers in onClose can cause 
+    // Note: Manual disposal of TextEditingControllers in onClose can cause
     // "used after disposed" errors during page transitions in GetX.
     super.onClose();
   }

@@ -7,12 +7,12 @@ abstract class Failure {
 }
 
 class ServerFailure extends Failure {
-  ServerFailure([String? message]) : super(message ?? 'Internal Server Error');
+  ServerFailure([String? message]) : super(message ?? 'Server error. Please try again later.');
 }
 
 class NetworkFailure extends Failure {
   NetworkFailure([String? message])
-    : super(message ?? 'No Internet Connection');
+    : super(message ?? 'No internet connection. Please check your network.');
 }
 
 class AuthFailure extends Failure {
@@ -36,7 +36,7 @@ class ConflictFailure extends Failure {
 }
 
 class TimeoutFailure extends Failure {
-  TimeoutFailure([String? message]) : super(message ?? 'Request Timeout');
+  TimeoutFailure([String? message]) : super(message ?? 'Connection timed out. Please check your internet.');
 }
 
 class CancelledFailure extends Failure {
@@ -44,5 +44,5 @@ class CancelledFailure extends Failure {
 }
 
 class UnknownFailure extends Failure {
-  UnknownFailure([String? message]) : super(message ?? 'Something went wrong');
+  UnknownFailure([String? message]) : super(message ?? 'Something went wrong. Please try again.');
 }

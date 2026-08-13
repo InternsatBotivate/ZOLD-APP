@@ -27,7 +27,8 @@ class SocketService extends GetxService {
 
   void _initSocket() {
     try {
-      final socketUrl = ApiConstants.baseUrl.replaceAll('/api', '');
+      final uri = Uri.parse(ApiConstants.baseUrl);
+      final socketUrl = uri.origin;
       AppLogger.i('Initializing Socket at: $socketUrl');
 
       _socket = io.io(socketUrl, <String, dynamic>{
@@ -46,8 +47,10 @@ class SocketService extends GetxService {
 
       _socket?.onDisconnect((_) => AppLogger.i('Socket disconnected'));
 
-      _socket?.onConnectError((err) => AppLogger.e('Socket Connect Error: $err'));
-      
+      _socket?.onConnectError(
+        (err) => AppLogger.e('Socket Connect Error: $err'),
+      );
+
       _socket?.onError((err) => AppLogger.e('Socket Error: $err'));
 
       _socket?.connect();

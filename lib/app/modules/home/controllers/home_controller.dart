@@ -11,6 +11,9 @@ import '../../../data/repositories/notification_repository.dart';
 import '../../../data/repositories/auth_repository_impl.dart';
 import '../../../data/models/base_response.dart';
 import '../../../data/models/wallet_models.dart';
+import '../../../core/utils/snackbar_utils.dart';
+import '../../../core/network/error_handler.dart';
+import '../../../core/errors/failures.dart';
 import '../../../core/utils/app_logger.dart';
 import 'package:intl/intl.dart';
 import 'package:tithi_engine/tithi_engine.dart';
@@ -85,6 +88,10 @@ class HomeController extends GetxController {
       ]).timeout(const Duration(seconds: 20));
     } catch (e) {
       AppLogger.e('HomeController.refreshData failure', e);
+      final failure = ErrorHandler.handleGeneralError(e);
+      if (failure is NetworkFailure || failure is TimeoutFailure) {
+        SnackbarUtils.showError(failure.message);
+      }
     } finally {
       isLoading.value = false;
     }
@@ -92,7 +99,9 @@ class HomeController extends GetxController {
 
   Future<void> fetchRates() async {
     try {
-      final response = await rateRepository.getCurrentRates().timeout(const Duration(seconds: 5));
+      final response = await rateRepository.getCurrentRates().timeout(
+        const Duration(seconds: 5),
+      );
       if (response.success && response.data != null) {
         goldBuyPrice.value = response.data!.gold.buyRate;
         goldSellPrice.value = response.data!.gold.sellRate;
@@ -131,7 +140,9 @@ class HomeController extends GetxController {
 
   Future<void> fetchCoinInventory() async {
     try {
-      final response = await coinRepository.getUserInventory().timeout(const Duration(seconds: 10));
+      final response = await coinRepository.getUserInventory().timeout(
+        const Duration(seconds: 10),
+      );
       if (response.success && response.data != null) {
         coinInventory.value = response.data!
             .where((c) => c.quantity > 0)
@@ -144,7 +155,9 @@ class HomeController extends GetxController {
 
   Future<void> fetchNotifications() async {
     try {
-      final response = await notificationRepository.getNotifications().timeout(const Duration(seconds: 10));
+      final response = await notificationRepository.getNotifications().timeout(
+        const Duration(seconds: 10),
+      );
       if (response.success && response.data != null) {
         notifications.assignAll(response.data!.notifications);
         unreadNotificationsCount.value = response.data!.unreadCount;
@@ -174,11 +187,10 @@ class HomeController extends GetxController {
           limit = 20;
       }
 
-      final response = await rateRepository.getRateHistory(
-        'GOLD',
-        limit: limit,
-      ).timeout(const Duration(seconds: 10));
-      
+      final response = await rateRepository
+          .getRateHistory('GOLD', limit: limit)
+          .timeout(const Duration(seconds: 10));
+
       if (response.success &&
           response.data != null &&
           response.data!.isNotEmpty) {
@@ -320,6 +332,7 @@ class HomeController extends GetxController {
 
   Future<void> calculateNextAuspiciousDay() async {
     try {
+      // Create a small local function to handle potentially missing festivals
       final panchang = Panchang([registerIndia]);
       final now = DateTime.now();
       final city = City.mumbai;
@@ -327,32 +340,44 @@ class HomeController extends GetxController {
       FestivalDef? nextDef;
       DateTime? nextDate;
 
-      // Limit search to major festivals
-      for (final def in festivals) {
-        // Check current year
-        final dates = panchang.recurringDates(def, now.year, city);
-        for (final fDate in dates) {
-          if (fDate.date.isAfter(now)) {
-            final currentNext = nextDate;
-            if (currentNext == null || fDate.date.isBefore(currentNext)) {
-              nextDate = fDate.date;
-              nextDef = def;
+      // Limit search to major festivals, ensure 'festivals' is available
+      final List<FestivalDef> festivalList = festivals;
+      if (festivalList.isEmpty) {
+        nextAuspiciousDayName.value = 'Check Muhurat';
+        return;
+      }
+
+      for (final def in festivalList) {
+        try {
+          // Check current year
+          final dates = panchang.recurringDates(def, now.year, city);
+          for (final fDate in dates) {
+            if (fDate.date.isAfter(now)) {
+              final currentNext = nextDate;
+              if (currentNext == null || fDate.date.isBefore(currentNext)) {
+                nextDate = fDate.date;
+                nextDef = def;
+              }
             }
           }
+        } catch (_) {
+          // Ignore specific festival calculation errors
         }
       }
 
       // If none found in current year, check next year
       if (nextDate == null) {
-        for (final def in festivals) {
-          final dates = panchang.recurringDates(def, now.year + 1, city);
-          for (final fDate in dates) {
-            final currentNext = nextDate;
-            if (currentNext == null || fDate.date.isBefore(currentNext)) {
-              nextDate = fDate.date;
-              nextDef = def;
+        for (final def in festivalList) {
+          try {
+            final dates = panchang.recurringDates(def, now.year + 1, city);
+            for (final fDate in dates) {
+              final currentNext = nextDate;
+              if (currentNext == null || fDate.date.isBefore(currentNext)) {
+                nextDate = fDate.date;
+                nextDef = def;
+              }
             }
-          }
+          } catch (_) {}
         }
       }
 

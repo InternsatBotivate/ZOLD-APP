@@ -73,8 +73,9 @@ class LoginView extends GetView<LoginController> {
                   style: TextStyle(color: theme.colorScheme.onSurface),
                   decoration: InputDecoration(
                     hintText: 'Enter username',
-                    hintStyle:
-                        TextStyle(color: theme.textTheme.bodySmall?.color),
+                    hintStyle: TextStyle(
+                      color: theme.textTheme.bodySmall?.color,
+                    ),
                   ),
                 ),
               ),
@@ -207,6 +208,18 @@ class LoginView extends GetView<LoginController> {
                 ),
               ),
             ],
+          ),
+          const SizedBox(height: 16),
+          GestureDetector(
+            onTap: controller.launchPrivacyPolicy,
+            child: Text(
+              'Privacy Policy',
+              style: TextStyle(
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
           ),
         ],
       ),

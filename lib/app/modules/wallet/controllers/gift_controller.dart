@@ -177,7 +177,9 @@ class GiftController extends GetxController {
   }
 
   void updateValueFromWeight() {
-    final price = metalType.value == 'GOLD' ? goldPrice.value : silverPrice.value;
+    final price = metalType.value == 'GOLD'
+        ? goldPrice.value
+        : silverPrice.value;
     if (price > 0) {
       final value = gramsAmount.value * price;
       if (value > maxGiftValue) {
@@ -193,7 +195,9 @@ class GiftController extends GetxController {
   }
 
   void updateWeightFromValue() {
-    final price = metalType.value == 'GOLD' ? goldPrice.value : silverPrice.value;
+    final price = metalType.value == 'GOLD'
+        ? goldPrice.value
+        : silverPrice.value;
     if (price > 0) {
       final value = double.tryParse(valueController.text) ?? 0.0;
       if (value > maxGiftValue) {
@@ -222,7 +226,7 @@ class GiftController extends GetxController {
     inputMode.value = 'amount';
     final cleanVal = val.replaceAll(',', '');
     final parsed = double.tryParse(cleanVal) ?? 0.0;
-    
+
     if (parsed > maxGiftValue) {
       errorText.value = 'Value cannot exceed ₹2,00,000';
     } else {
@@ -278,8 +282,10 @@ class GiftController extends GetxController {
   Future<void> sendGift() async {
     if (isProcessing.value) return;
 
-    final price = metalType.value == 'GOLD' ? goldPrice.value : silverPrice.value;
-    final value = giftType.value == 'VIRTUAL' 
+    final price = metalType.value == 'GOLD'
+        ? goldPrice.value
+        : silverPrice.value;
+    final value = giftType.value == 'VIRTUAL'
         ? (gramsAmount.value * price)
         : (selectedCoin.value * coinQuantity.value * price);
 

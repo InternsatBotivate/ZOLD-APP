@@ -94,9 +94,7 @@ class GoldCoinsController extends GetxController {
         : walletBalance.value?.silverGrams ?? 0.0;
 
     if (balance < (grams * quantity)) {
-      SnackbarUtils.showError(
-        'You do not have enough $metal in your wallet.',
-      );
+      SnackbarUtils.showError('You do not have enough $metal in your wallet.');
       return;
     }
 

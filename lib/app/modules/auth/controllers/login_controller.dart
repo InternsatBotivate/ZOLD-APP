@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../data/repositories/auth_repository_impl.dart';
 import '../../../data/models/auth_models.dart';
 import '../../../core/services/auth_service.dart';
@@ -79,9 +80,20 @@ class LoginController extends GetxController {
     Get.toNamed(Routes.forgotPassword);
   }
 
+  Future<void> launchPrivacyPolicy() async {
+    final Uri url = Uri.parse('https://zold-frontend-mzjh.vercel.app/privacy-policy');
+    try {
+      if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+        errorMessage.value = 'Could not launch Privacy Policy';
+      }
+    } catch (e) {
+      errorMessage.value = 'Error launching Privacy Policy: $e';
+    }
+  }
+
   @override
   void onClose() {
-    // Note: Manual disposal of TextEditingControllers in onClose can cause 
+    // Note: Manual disposal of TextEditingControllers in onClose can cause
     // "used after disposed" errors during page transitions in GetX.
     // They will be garbage collected when this controller is removed from memory.
     super.onClose();

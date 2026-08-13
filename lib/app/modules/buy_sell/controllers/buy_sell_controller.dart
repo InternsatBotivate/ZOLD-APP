@@ -136,7 +136,7 @@ class BuySellController extends GetxController {
         fetchWalletBalance(),
         restoreActiveSession(),
       ]).timeout(const Duration(seconds: 15));
-      
+
       _updateCurrentRate();
 
       if (currentState.value == BuySellState.input) {
@@ -148,7 +148,9 @@ class BuySellController extends GetxController {
       }
 
       if (buyPrice.value <= 0 || sellPrice.value <= 0) {
-        throw Exception('Market rates are currently unavailable. Please try again in a moment.');
+        throw Exception(
+          'Market rates are currently unavailable. Please try again in a moment.',
+        );
       }
     } catch (e) {
       AppLogger.e('Error loading initial data', e);
@@ -169,11 +171,11 @@ class BuySellController extends GetxController {
     if (showLoader && currentState.value == BuySellState.input) {
       isLoading.value = true;
       _isUpdating = true;
-      
+
       buyPrice.value = 0.0;
       sellPrice.value = 0.0;
       currentRate.value = 0.0;
-      
+
       amountController.clear();
       gramsController.clear();
       metalGrams.value = 0.0;
@@ -182,7 +184,7 @@ class BuySellController extends GetxController {
       isInsufficientBalance.value = false;
       _isUpdating = false;
     }
-    
+
     isError.value = false;
     errorMessage.value = '';
 
@@ -193,11 +195,12 @@ class BuySellController extends GetxController {
         fetchWalletBalance(),
         restoreActiveSession(),
       ]).timeout(const Duration(seconds: 10));
-      
+
       _updateCurrentRate();
-      
+
       if (currentState.value == BuySellState.input) {
-        if (amountController.text.isNotEmpty || gramsController.text.isNotEmpty) {
+        if (amountController.text.isNotEmpty ||
+            gramsController.text.isNotEmpty) {
           _syncInputs();
         }
         isProceedChecked.value = false;
@@ -248,7 +251,7 @@ class BuySellController extends GetxController {
     gramsController.dispose();
     amountFocusNode.dispose();
     gramsFocusNode.dispose();
-    
+
     if (_razorpayInitialized) {
       _razorpay.clear();
     }
@@ -276,10 +279,12 @@ class BuySellController extends GetxController {
 
   Future<void> restoreActiveSession() async {
     try {
-      final response = await purchaseRepository.getActiveSession().timeout(const Duration(seconds: 5));
+      final response = await purchaseRepository.getActiveSession().timeout(
+        const Duration(seconds: 5),
+      );
       if (response.success && response.data != null) {
         final activeSession = response.data!;
-        
+
         if (session.value?.id != activeSession.id) {
           metalType.value = activeSession.metalType;
           actionType.value = activeSession.transactionType;
@@ -300,19 +305,21 @@ class BuySellController extends GetxController {
     } catch (e) {
       AppLogger.e('Error restoring session', e);
       if (currentState.value == BuySellState.review) {
-         final error = ErrorHandler.handleGeneralError(e);
-         if (error is AuthFailure || error is NotFoundFailure) {
-            session.value = null;
-            _sessionTimer?.cancel();
-            currentState.value = BuySellState.input;
-         }
+        final error = ErrorHandler.handleGeneralError(e);
+        if (error is AuthFailure || error is NotFoundFailure) {
+          session.value = null;
+          _sessionTimer?.cancel();
+          currentState.value = BuySellState.input;
+        }
       }
     }
   }
 
   Future<void> fetchInitialRates() async {
     try {
-      final response = await rateRepository.getCurrentRates().timeout(const Duration(seconds: 5));
+      final response = await rateRepository.getCurrentRates().timeout(
+        const Duration(seconds: 5),
+      );
       if (response.success && response.data != null) {
         final rates = response.data!;
         if (metalType.value == 'GOLD') {
@@ -500,7 +507,7 @@ class BuySellController extends GetxController {
 
   Future<void> proceedToReview() async {
     if (isProcessing.value) return; // Prevent double tap
-    
+
     if (metalGrams.value <= 0) {
       SnackbarUtils.showError('Please enter a valid amount');
       return;
@@ -519,7 +526,9 @@ class BuySellController extends GetxController {
         return;
       }
       if (!isProceedChecked.value) {
-        SnackbarUtils.showError('Please confirm that you understand the action');
+        SnackbarUtils.showError(
+          'Please confirm that you understand the action',
+        );
         return;
       }
     }
@@ -534,18 +543,22 @@ class BuySellController extends GetxController {
         metalGrams: metalGrams.value,
       );
 
-      final response = await purchaseRepository.initiatePurchase(request).timeout(const Duration(seconds: 15));
+      final response = await purchaseRepository
+          .initiatePurchase(request)
+          .timeout(const Duration(seconds: 15));
       if (response.success && response.data != null) {
         session.value = response.data;
         metalType.value = response.data!.metalType.toUpperCase();
         actionType.value = response.data!.transactionType.toUpperCase();
-        
+
         currentState.value = BuySellState.review;
         startSessionTimer();
         AppLogger.i('Session Initiated: ${response.data!.id}');
       } else {
         AppLogger.e('Initiation Failed: ${response.message}');
-        SnackbarUtils.showError(response.message ?? 'Failed to initiate session');
+        SnackbarUtils.showError(
+          response.message ?? 'Failed to initiate session',
+        );
       }
     } catch (e) {
       AppLogger.e('Initiation Exception', e);
@@ -570,8 +583,8 @@ class BuySellController extends GetxController {
   void _updateTimer() {
     final expiry = session.value?.expiresAt;
     if (expiry == null) {
-       _sessionTimer?.cancel();
-       return;
+      _sessionTimer?.cancel();
+      return;
     }
 
     final diff = expiry.difference(DateTime.now()).inSeconds;
@@ -589,13 +602,15 @@ class BuySellController extends GetxController {
     AppLogger.w('Session Expired');
     final wasInReview = currentState.value == BuySellState.review;
     session.value = null;
-    
+
     if (wasInReview && !_isShowingExpiryDialog) {
       _isShowingExpiryDialog = true;
       Get.dialog(
         AlertDialog(
           title: const Text('Session Expired'),
-          content: const Text('Your price lock has expired. Please start over with updated rates.'),
+          content: const Text(
+            'Your price lock has expired. Please start over with updated rates.',
+          ),
           actions: [
             TextButton(
               onPressed: () {
@@ -620,19 +635,21 @@ class BuySellController extends GetxController {
       currentState.value = BuySellState.input;
       return;
     }
-    
+
     final sessionId = session.value!.id;
     session.value = null;
     _sessionTimer?.cancel();
     currentState.value = BuySellState.input;
-    
+
     try {
-      await purchaseRepository.cancelSession(sessionId).timeout(const Duration(seconds: 5));
+      await purchaseRepository
+          .cancelSession(sessionId)
+          .timeout(const Duration(seconds: 5));
       AppLogger.i('Session Cancelled: $sessionId');
     } catch (e) {
       AppLogger.w('Error during session cancellation: $e');
     }
-    
+
     refreshData(showLoader: false);
   }
 
@@ -658,14 +675,16 @@ class BuySellController extends GetxController {
 
     AppLogger.i('Executing transaction: ${actionType.value}');
     isProcessing.value = true;
-    paymentStatus.value = actionType.value == 'BUY' ? 'Creating Order...' : 'Processing Sale...';
+    paymentStatus.value = actionType.value == 'BUY'
+        ? 'Creating Order...'
+        : 'Processing Sale...';
 
     try {
       if (actionType.value == 'BUY') {
-        final orderResponse = await purchaseRepository.createOrder(
-          session.value!.id,
-        ).timeout(const Duration(seconds: 20));
-        
+        final orderResponse = await purchaseRepository
+            .createOrder(session.value!.id)
+            .timeout(const Duration(seconds: 20));
+
         if (orderResponse.success && orderResponse.data != null) {
           final order = orderResponse.data!;
           activeOrderId.value = order.id;
@@ -692,19 +711,23 @@ class BuySellController extends GetxController {
             },
             'theme': {'color': '#B8960C'},
           };
-          
+
           if (_razorpayInitialized) {
-             _razorpay.open(options);
-             paymentStatus.value = 'Waiting for Payment...';
+            _razorpay.open(options);
+            paymentStatus.value = 'Waiting for Payment...';
           } else {
-             throw Exception('Payment gateway initialization failed. Please try again.');
+            throw Exception(
+              'Payment gateway initialization failed. Please try again.',
+            );
           }
         } else {
           AppLogger.e('Order creation failed: ${orderResponse.message}');
           isProcessing.value = false;
-          
+
           final msg = orderResponse.message?.toLowerCase() ?? '';
-          if (msg.contains('cancelled') || msg.contains('not found') || msg.contains('expired')) {
+          if (msg.contains('cancelled') ||
+              msg.contains('not found') ||
+              msg.contains('expired')) {
             await cancelSession();
             SnackbarUtils.showError('Session is no longer active.');
           } else {
@@ -713,33 +736,39 @@ class BuySellController extends GetxController {
         }
       } else {
         paymentStatus.value = 'Processing Sale...';
-        final sellResponse = await purchaseRepository.executeSell(
-          session.value!.id,
-        ).timeout(const Duration(seconds: 30));
-        
+        final sellResponse = await purchaseRepository
+            .executeSell(session.value!.id)
+            .timeout(const Duration(seconds: 30));
+
         if (sellResponse.success) {
           _onSuccess();
         } else {
           AppLogger.e('Sell failed: ${sellResponse.message}');
           isProcessing.value = false;
-          
+
           final msg = sellResponse.message?.toLowerCase() ?? '';
-          if (msg.contains('cancelled') || msg.contains('not found') || msg.contains('expired')) {
+          if (msg.contains('cancelled') ||
+              msg.contains('not found') ||
+              msg.contains('expired')) {
             await cancelSession();
             SnackbarUtils.showError('Session is no longer active.');
           } else {
-            SnackbarUtils.showError(sellResponse.message ?? 'Failed to execute sale');
+            SnackbarUtils.showError(
+              sellResponse.message ?? 'Failed to execute sale',
+            );
           }
         }
       }
     } catch (e) {
       AppLogger.e('Execution Exception', e);
       isProcessing.value = false;
-      
+
       final error = ErrorHandler.handleGeneralError(e);
       if (error is AuthFailure || error is NotFoundFailure) {
         await cancelSession();
-        SnackbarUtils.showError('Session is no longer active. Please start again.');
+        SnackbarUtils.showError(
+          'Session is no longer active. Please start again.',
+        );
       } else {
         SnackbarUtils.showError(error.message);
       }
@@ -769,9 +798,9 @@ class BuySellController extends GetxController {
         Get.find<NotificationsController>().fetchNotifications();
       }
     } catch (e) {
-       AppLogger.w('Background refresh failed: $e');
+      AppLogger.w('Background refresh failed: $e');
     } finally {
-       isProcessing.value = false;
+      isProcessing.value = false;
     }
   }
 
@@ -794,7 +823,9 @@ class BuySellController extends GetxController {
     if (currentSession == null) {
       AppLogger.e('Session lost during payment verification');
       isProcessing.value = false;
-      SnackbarUtils.showError('Session lost. Please contact support if amount was debited.');
+      SnackbarUtils.showError(
+        'Session lost. Please contact support if amount was debited.',
+      );
       return;
     }
 
@@ -813,16 +844,18 @@ class BuySellController extends GetxController {
         throw Exception('Incomplete payment information received.');
       }
 
-      final verifyResponse = await purchaseRepository.verifyPayment(
-        verifyRequest,
-      ).timeout(const Duration(seconds: 45));
-      
+      final verifyResponse = await purchaseRepository
+          .verifyPayment(verifyRequest)
+          .timeout(const Duration(seconds: 45));
+
       if (verifyResponse.success) {
         _onSuccess();
       } else {
         AppLogger.e('Verification API failed: ${verifyResponse.message}');
         isProcessing.value = false;
-        SnackbarUtils.showError(verifyResponse.message ?? 'Payment verification failed');
+        SnackbarUtils.showError(
+          verifyResponse.message ?? 'Payment verification failed',
+        );
       }
     } catch (e) {
       AppLogger.e('Exception during verification', e);
@@ -832,7 +865,9 @@ class BuySellController extends GetxController {
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
-    AppLogger.e('Razorpay Error Callback: Code: ${response.code}, Message: ${response.message}');
+    AppLogger.e(
+      'Razorpay Error Callback: Code: ${response.code}, Message: ${response.message}',
+    );
 
     isProcessing.value = false;
 
@@ -844,12 +879,12 @@ class BuySellController extends GetxController {
         'reason': response.message ?? 'User cancelled or failed',
       });
     }
-    
+
     // Friendly message for user cancellation (code 0 in Razorpay)
     if (response.code == 0) {
-       SnackbarUtils.showInfo('Payment cancelled.');
+      SnackbarUtils.showInfo('Payment cancelled.');
     } else {
-       SnackbarUtils.showError(response.message ?? 'Transaction failed');
+      SnackbarUtils.showError(response.message ?? 'Transaction failed');
     }
   }
 

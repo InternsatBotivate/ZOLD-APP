@@ -53,7 +53,7 @@ class PartnersController extends GetxController {
   late Worker _searchWorker;
 
   PartnersController({required PartnerRepository partnerRepository})
-      : _partnerRepository = partnerRepository;
+    : _partnerRepository = partnerRepository;
 
   void setMapReady(bool ready) => _isMapReady = ready;
 

@@ -92,21 +92,31 @@ class HistoryController extends GetxController {
     if (dateFilter.value != 'all') {
       final now = DateTime.now();
       final today = DateTime(now.year, now.month, now.day);
-      
+
       filtered = filtered.where((t) {
-        final txDate = DateTime(t.createdAt.year, t.createdAt.month, t.createdAt.day);
-        
+        final txDate = DateTime(
+          t.createdAt.year,
+          t.createdAt.month,
+          t.createdAt.day,
+        );
+
         if (dateFilter.value == 'today') {
           return txDate.isAtSameMomentAs(today);
         }
         if (dateFilter.value == 'week') {
           final firstDayOfWeek = now.subtract(Duration(days: now.weekday - 1));
-          final monday = DateTime(firstDayOfWeek.year, firstDayOfWeek.month, firstDayOfWeek.day);
+          final monday = DateTime(
+            firstDayOfWeek.year,
+            firstDayOfWeek.month,
+            firstDayOfWeek.day,
+          );
           return txDate.isAfter(monday.subtract(const Duration(seconds: 1)));
         }
         if (dateFilter.value == 'month') {
           final firstDayOfMonth = DateTime(now.year, now.month, 1);
-          return txDate.isAfter(firstDayOfMonth.subtract(const Duration(seconds: 1)));
+          return txDate.isAfter(
+            firstDayOfMonth.subtract(const Duration(seconds: 1)),
+          );
         }
         return true;
       }).toList();

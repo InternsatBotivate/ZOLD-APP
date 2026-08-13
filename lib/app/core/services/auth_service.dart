@@ -37,8 +37,8 @@ class AuthService extends GetxService {
 
   Future<AuthService> init() async {
     AppLogger.i('AuthService.init: Loading state');
-    _isRestoring = true; 
-    
+    _isRestoring = true;
+
     try {
       final prefs = await SharedPreferences.getInstance();
       _hasSeenOnboarding.value = prefs.getBool('hasSeenOnboarding') ?? false;
@@ -51,7 +51,7 @@ class AuthService extends GetxService {
       _lastRoute.value = prefs.getString('lastRoute');
       final argsJson = prefs.getString('lastRouteArgs');
       AppLogger.i('AuthService.init: Loaded lastRoute=${_lastRoute.value}');
-      
+
       if (argsJson != null && argsJson.isNotEmpty) {
         try {
           _lastRouteArgs.value = json.decode(argsJson);
@@ -112,7 +112,7 @@ class AuthService extends GetxService {
         await prefs.remove('lastRouteArgs');
       }
     } catch (e) {
-       AppLogger.e('AuthService.saveLastRoute: Error persisting route', e);
+      AppLogger.e('AuthService.saveLastRoute: Error persisting route', e);
     }
   }
 
@@ -134,7 +134,7 @@ class AuthService extends GetxService {
       await prefs.setBool('hasSeenOnboarding', true);
       _hasSeenOnboarding.value = true;
     } catch (e) {
-       AppLogger.e('AuthService.completeOnboarding error', e);
+      AppLogger.e('AuthService.completeOnboarding error', e);
     }
   }
 
@@ -150,11 +150,14 @@ class AuthService extends GetxService {
 
   Future<void> validateSession() async {
     try {
-      if (!Get.isRegistered<AuthRepository>() || !Get.isRegistered<ProfileRepository>()) {
-        AppLogger.w('AuthService: Repositories not registered during validateSession');
+      if (!Get.isRegistered<AuthRepository>() ||
+          !Get.isRegistered<ProfileRepository>()) {
+        AppLogger.w(
+          'AuthService: Repositories not registered during validateSession',
+        );
         return;
       }
-      
+
       final authRepository = Get.find<AuthRepository>();
       final profileRepository = Get.find<ProfileRepository>();
 
@@ -171,7 +174,9 @@ class AuthService extends GetxService {
             user.value = response.data;
           }
         } catch (e) {
-          AppLogger.w('Profile fetch failed during session validation, using basic user info');
+          AppLogger.w(
+            'Profile fetch failed during session validation, using basic user info',
+          );
           user.value = response.data;
         }
       } else {
@@ -200,15 +205,21 @@ class AuthService extends GetxService {
       // Best-effort cleanup of active purchase sessions
       if (Get.isRegistered<PurchaseRepository>()) {
         final purchaseRepo = Get.find<PurchaseRepository>();
-        final activeResponse = await purchaseRepo.getActiveSession().timeout(const Duration(seconds: 3));
+        final activeResponse = await purchaseRepo.getActiveSession().timeout(
+          const Duration(seconds: 3),
+        );
         if (activeResponse.success &&
             activeResponse.data != null &&
             activeResponse.data?.id != null) {
-          await purchaseRepo.cancelSession(activeResponse.data!.id).timeout(const Duration(seconds: 3));
+          await purchaseRepo
+              .cancelSession(activeResponse.data!.id)
+              .timeout(const Duration(seconds: 3));
         }
       }
     } catch (e) {
-      AppLogger.w('AuthService.logout: Purchase session cleanup failed (ignored)');
+      AppLogger.w(
+        'AuthService.logout: Purchase session cleanup failed (ignored)',
+      );
     }
 
     try {

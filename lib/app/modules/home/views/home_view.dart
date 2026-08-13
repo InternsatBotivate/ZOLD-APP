@@ -126,23 +126,25 @@ class HomeView extends GetView<HomeController> {
           child: Padding(
             padding: const EdgeInsets.only(right: 16),
             child: Obx(
-              () => CircleAvatar(
-                radius: 16,
-                backgroundColor: isDark ? Colors.white10 : theme.dividerColor,
-                backgroundImage:
-                    AuthService.to.user.value?.profilePictureUrl != null
-                    ? CachedNetworkImageProvider(
-                        AuthService.to.user.value!.profilePictureUrl!,
-                      )
-                    : null,
-                child: AuthService.to.user.value?.profilePictureUrl == null
-                    ? Icon(
-                        Icons.person,
-                        size: 20,
-                        color: theme.textTheme.bodySmall?.color,
-                      )
-                    : null,
-              ),
+              () {
+                final user = AuthService.to.user.value;
+                final imageUrl = user?.profilePictureUrl;
+                
+                return CircleAvatar(
+                  radius: 16,
+                  backgroundColor: isDark ? Colors.white10 : theme.dividerColor,
+                  backgroundImage: imageUrl != null && imageUrl.isNotEmpty
+                      ? CachedNetworkImageProvider(imageUrl)
+                      : null,
+                  child: imageUrl == null || imageUrl.isEmpty
+                      ? Icon(
+                          Icons.person,
+                          size: 20,
+                          color: theme.textTheme.bodySmall?.color,
+                        )
+                      : null,
+                );
+              },
             ),
           ),
         ),
@@ -1166,8 +1168,8 @@ class HomeView extends GetView<HomeController> {
             child: Obx(
               () => controller.isLoading.value
                   ? _buildShimmerPriceChart(context)
-                  : controller.priceHistory.isEmpty
-                  ? const Center(child: Text('No data available'))
+                  : controller.priceHistory.length < 2
+                  ? const Center(child: Text('Insufficient data for chart'))
                   : LineChart(
                       LineChartData(
                         gridData: FlGridData(
@@ -1181,15 +1183,15 @@ class HomeView extends GetView<HomeController> {
                         titlesData: const FlTitlesData(show: false),
                         borderData: FlBorderData(show: false),
                         minY:
-                            controller.priceHistory
+                            (controller.priceHistory
                                 .map((e) => e.buyRate)
                                 .reduce((a, b) => a < b ? a : b) *
-                            0.999,
+                            0.999),
                         maxY:
-                            controller.priceHistory
+                            (controller.priceHistory
                                 .map((e) => e.buyRate)
                                 .reduce((a, b) => a > b ? a : b) *
-                            1.001,
+                            1.001),
                         lineBarsData: [
                           LineChartBarData(
                             spots: controller.priceHistory.asMap().entries.map((

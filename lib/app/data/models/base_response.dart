@@ -12,12 +12,20 @@ class BaseResponse<T> {
     T? Function(Object? json) fromJsonT,
   ) {
     if (json == null) {
-      return BaseResponse(success: false, message: 'Server returned empty response');
+      return BaseResponse(
+        success: false,
+        message: 'Server returned empty response',
+      );
     }
-    
+
     if (json is! Map<String, dynamic>) {
-       AppLogger.e('BaseResponse: Invalid JSON structure. Expected Map, got ${json.runtimeType}');
-       return BaseResponse(success: false, message: 'Unexpected response format');
+      AppLogger.e(
+        'BaseResponse: Invalid JSON structure. Expected Map, got ${json.runtimeType}',
+      );
+      return BaseResponse(
+        success: false,
+        message: 'Unexpected response format',
+      );
     }
 
     try {
@@ -36,16 +44,13 @@ class BaseResponse<T> {
       } catch (parseError) {
         AppLogger.e('BaseResponse: Model parsing failed', parseError);
         return BaseResponse(
-          success: false, 
-          message: 'Data processing error. Please try again or contact support.'
+          success: false,
+          message:
+              'Data processing error. Please try again or contact support.',
         );
       }
 
-      return BaseResponse(
-        success: success,
-        data: data,
-        message: message,
-      );
+      return BaseResponse(success: success, data: data, message: message);
     } catch (e) {
       AppLogger.e('BaseResponse: Factory error', e);
       return BaseResponse(success: false, message: 'Parsing error occurred');

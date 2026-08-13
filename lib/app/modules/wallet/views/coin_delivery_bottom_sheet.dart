@@ -217,12 +217,14 @@ class CoinDeliveryBottomSheet extends GetView<DeliveryController> {
                 final q = int.tryParse(val);
                 if (q != null) {
                   if (q > coin.quantity) {
-                    controller.quantityController.text = coin.quantity.toString();
+                    controller.quantityController.text = coin.quantity
+                        .toString();
                     controller.quantityController.selection =
                         TextSelection.fromPosition(
-                      TextPosition(
-                          offset: controller.quantityController.text.length),
-                    );
+                          TextPosition(
+                            offset: controller.quantityController.text.length,
+                          ),
+                        );
                     controller.quantityValue.value = coin.quantity;
                   } else {
                     controller.quantityValue.value = q;

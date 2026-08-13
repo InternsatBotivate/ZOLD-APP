@@ -41,62 +41,65 @@ class MainView extends GetView<MainController> {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
-    return GestureDetector(
-      onTap: () => Get.toNamed(Routes.buySell),
-      child: Container(
-        height: 64,
-        width: 64,
-        margin: const EdgeInsets.only(top: 20),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: isDark ? theme.colorScheme.surface : Colors.white,
-          border: Border.all(
-            color: theme.colorScheme.primary.withValues(
-              alpha: isDark ? 0.4 : 0.3,
-            ),
-            width: 1,
+    return Container(
+      height: 64,
+      width: 64,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: isDark ? theme.colorScheme.surface : Colors.white,
+        border: Border.all(
+          color: theme.colorScheme.primary.withValues(
+            alpha: isDark ? 0.4 : 0.3,
           ),
-          gradient: isDark
-              ? null
-              : const LinearGradient(
-                  colors: [Colors.white, Color(0xFFFDF7DE), Color(0xFFEDD28D)],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
+          width: 1,
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'BUY',
-              style: TextStyle(
-                color: isDark
-                    ? theme.colorScheme.primary
-                    : const Color(0xFF8B6B00),
-                fontSize: 10,
-                fontWeight: FontWeight.bold,
-                height: 1.0,
+        gradient: isDark
+            ? null
+            : const LinearGradient(
+                colors: [Colors.white, Color(0xFFFDF7DE), Color(0xFFEDD28D)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
               ),
-            ),
-            Text(
-              'NOW',
-              style: TextStyle(
-                color: isDark
-                    ? theme.colorScheme.primary
-                    : const Color(0xFF8B6B00),
-                fontSize: 10,
-                fontWeight: FontWeight.bold,
-                height: 1.0,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.15),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () => Get.toNamed(Routes.buySell),
+          customBorder: const CircleBorder(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'BUY',
+                style: TextStyle(
+                  color: isDark
+                      ? theme.colorScheme.primary
+                      : const Color(0xFF8B6B00),
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  height: 1.0,
+                ),
               ),
-            ),
-          ],
+              Text(
+                'NOW',
+                style: TextStyle(
+                  color: isDark
+                      ? theme.colorScheme.primary
+                      : const Color(0xFF8B6B00),
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  height: 1.0,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -120,22 +123,20 @@ class MainView extends GetView<MainController> {
             ),
           ),
         ),
-        child: Obx(
-          () => Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildNavItem(context, Icons.home_outlined, 'Home', 0),
-              _buildNavItem(
-                context,
-                Icons.account_balance_wallet_outlined,
-                'Portfolio',
-                1,
-              ),
-              const SizedBox(width: 48), // Space for FAB
-              _buildNavItem(context, Icons.person_outline, 'Profile', 2),
-              _buildMoreItem(context),
-            ],
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _buildNavItem(context, Icons.home_outlined, 'Home', 0),
+            _buildNavItem(
+              context,
+              Icons.account_balance_wallet_outlined,
+              'Portfolio',
+              1,
+            ),
+            const SizedBox(width: 48), // Space for FAB
+            _buildNavItem(context, Icons.person_outline, 'Profile', 2),
+            _buildMoreItem(context),
+          ],
         ),
       ),
     );
@@ -147,33 +148,35 @@ class MainView extends GetView<MainController> {
     String label,
     int index,
   ) {
-    final isSelected = controller.currentIndex.value == index;
     final theme = Theme.of(context);
 
     return InkWell(
       onTap: () => controller.changeTabIndex(index),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            icon,
-            color: isSelected
-                ? theme.colorScheme.primary
-                : theme.colorScheme.onSurfaceVariant,
-            size: 24,
-          ),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 10,
+      child: Obx(() {
+        final isSelected = controller.currentIndex.value == index;
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
               color: isSelected
                   ? theme.colorScheme.primary
                   : theme.colorScheme.onSurfaceVariant,
-              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              size: 24,
             ),
-          ),
-        ],
-      ),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 10,
+                color: isSelected
+                    ? theme.colorScheme.primary
+                    : theme.colorScheme.onSurfaceVariant,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              ),
+            ),
+          ],
+        );
+      }),
     );
   }
 
@@ -185,7 +188,11 @@ class MainView extends GetView<MainController> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.menu, color: theme.colorScheme.onSurfaceVariant, size: 24),
+            Icon(
+              Icons.menu,
+              color: theme.colorScheme.onSurfaceVariant,
+              size: 24,
+            ),
             Text(
               'More',
               style: TextStyle(

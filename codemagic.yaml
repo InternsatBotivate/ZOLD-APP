@@ -8,7 +8,9 @@ workflows:
       groups:
         - zold_env          # holds BASE_URL, RAZORPAY_KEY, RISK_DISCLOSURE_PDF_URL, CONNECT_TIMEOUT, RECEIVE_TIMEOUT, PRIVACY_POLICY_URL, WEB_URL
         - zold_android_signing  # holds CM_KEYSTORE, CM_KEYSTORE_PASSWORD, CM_KEY_ALIAS, CM_KEY_ALIAS_PASSWORD
-        - zold_play_credentials  # holds GCLOUD_SERVICE_ACCOUNT_CREDENTIALS (Play Console service account JSON)
+        # zold_play_credentials intentionally not included yet: Play Console requires the FIRST release of a
+        # new app to be uploaded manually before API-based publishing (google_play block below) can work.
+        # Re-add this group and un-comment the `google_play:` block once that first manual upload is done.
       vars:
         PACKAGE_NAME: "in.zold.app"
     triggering:
@@ -60,7 +62,10 @@ workflows:
         notify:
           success: true
           failure: true
-      google_play:
-        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
-        track: internal          # start on internal testing; move to production manually in Play Console once ready
-        submit_as_draft: true
+      # google_play publishing disabled until the first .aab is uploaded to Play Console manually
+      # (Google requires this for a brand-new app before API-based publishing is allowed).
+      # Once done: re-add the zold_play_credentials group above and uncomment this block.
+      # google_play:
+      #   credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+      #   track: internal
+      #   submit_as_draft: true

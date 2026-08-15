@@ -6,7 +6,7 @@ workflows:
     environment:
       flutter: stable
       groups:
-        - zold_env          # holds .env contents as ZOLD_ENV_FILE (or individual BASE_URL / RAZORPAY_KEY / etc. vars)
+        - zold_env          # holds BASE_URL, RAZORPAY_KEY, RISK_DISCLOSURE_PDF_URL, CONNECT_TIMEOUT, RECEIVE_TIMEOUT, PRIVACY_POLICY_URL, WEB_URL
         - zold_android_signing  # holds CM_KEYSTORE, CM_KEYSTORE_PASSWORD, CM_KEY_ALIAS, CM_KEY_ALIAS_PASSWORD
         - zold_play_credentials  # holds GCLOUD_SERVICE_ACCOUNT_CREDENTIALS (Play Console service account JSON)
       vars:
@@ -21,9 +21,17 @@ workflows:
         - pattern: "v*.*.*"
           include: true
     scripts:
-      - name: Write .env from secure variable
+      - name: Write .env from secure variables
         script: |
-          echo "$ZOLD_ENV_FILE" > "$CM_BUILD_DIR/.env"
+          cat <<EOF > "$CM_BUILD_DIR/.env"
+          BASE_URL=$BASE_URL
+          RAZORPAY_KEY=$RAZORPAY_KEY
+          RISK_DISCLOSURE_PDF_URL=$RISK_DISCLOSURE_PDF_URL
+          CONNECT_TIMEOUT=$CONNECT_TIMEOUT
+          RECEIVE_TIMEOUT=$RECEIVE_TIMEOUT
+          PRIVACY_POLICY_URL=$PRIVACY_POLICY_URL
+          WEB_URL=$WEB_URL
+          EOF
 
       - name: Set up Android signing
         script: |

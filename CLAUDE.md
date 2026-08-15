@@ -83,7 +83,7 @@ Razorpay (`razorpay_flutter`) is used for SIP orders, coin cart checkout, and me
 Android package name (`applicationId`/`namespace`) is `in.zold.app` (`android/app/build.gradle.kts`, `android/app/src/main/kotlin/in/zold/app/MainActivity.kt`) — this is permanent once published, do not change it after the first Play Store upload.
 
 Builds run on **Codemagic** (`codemagic.yaml`, workflow `android-production`), not locally — this project intentionally has no local Flutter SDK install. Codemagic:
-- Reconstructs `.env` from the `zold_env` variable group (see `.env.example` for the required keys).
+- Reconstructs `.env` from the individual variables in the `zold_env` group (`BASE_URL`, `RAZORPAY_KEY`, `RISK_DISCLOSURE_PDF_URL`, `CONNECT_TIMEOUT`, `RECEIVE_TIMEOUT`, `PRIVACY_POLICY_URL`, `WEB_URL` — see `.env.example`).
 - Reconstructs the release keystore from `zold_android_signing` (`CM_KEYSTORE` base64, `CM_KEYSTORE_PASSWORD`, `CM_KEY_ALIAS`, `CM_KEY_ALIAS_PASSWORD`) into `android/key.properties` / `android/app/keystore.jks` at build time — neither file is committed (see `.gitignore`).
 - Runs `flutter build appbundle --release` and can auto-submit the `.aab` to Play Console via `zold_play_credentials` (Google Play service-account JSON), similar to how FrogPlanner (`FrogPlanner_App`) uses EAS + `google-play-service-account.json` — but Codemagic/Flutter is the equivalent tool here, not EAS, since this is not an Expo/React Native project.
 - Triggers on push to `main` and on `v*.*.*` tags; publishes to the `internal` Play Store track as a draft by default — promote to production manually in Play Console until the release process is proven out.

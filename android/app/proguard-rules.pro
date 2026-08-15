@@ -5,7 +5,7 @@
 -keep class io.flutter.view.** { *; }
 -keep class io.flutter.** { *; }
 -keep class io.flutter.plugins.** { *; }
--keep class com.example.zold_gold.GeneratedPluginRegistrant { *; }
+-keep class in.zold.app.GeneratedPluginRegistrant { *; }
 
 # Razorpay Rules (Critical for Payment UI)
 -keepattributes *Annotation*
@@ -20,7 +20,7 @@
 -keep class com.it_is_not_a_bug.flutter_secure_storage.** { *; }
 
 # Dio and JSON Rules (Keep all models for manual parsing)
--keep class com.example.zold_gold.app.data.models.** { *; }
+-keep class in.zold.app.app.data.models.** { *; }
 
 # Socket.IO Rules
 -keep class io.socket.** { *; }

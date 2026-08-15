@@ -19,3 +19,11 @@ android/app/build/
 *.class
 *.apk
 *.aab
+
+# Android signing (never commit these)
+android/key.properties
+*.jks
+*.keystore
+
+# Play Store service account credentials
+google-play-service-account.json

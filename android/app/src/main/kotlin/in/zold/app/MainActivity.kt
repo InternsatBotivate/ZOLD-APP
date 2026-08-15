@@ -1,4 +1,4 @@
-package com.example.zold_gold
+package in.zold.app
 
 import io.flutter.embedding.android.FlutterActivity
 

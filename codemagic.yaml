@@ -1,0 +1,58 @@
+workflows:
+  android-production:
+    name: ZOLD Android Production
+    max_build_duration: 60
+    instance_type: linux_x2
+    environment:
+      flutter: stable
+      groups:
+        - zold_env          # holds .env contents as ZOLD_ENV_FILE (or individual BASE_URL / RAZORPAY_KEY / etc. vars)
+        - zold_android_signing  # holds CM_KEYSTORE, CM_KEYSTORE_PASSWORD, CM_KEY_ALIAS, CM_KEY_ALIAS_PASSWORD
+        - zold_play_credentials  # holds GCLOUD_SERVICE_ACCOUNT_CREDENTIALS (Play Console service account JSON)
+      vars:
+        PACKAGE_NAME: "in.zold.app"
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: main
+          include: true
+      tag_patterns:
+        - pattern: "v*.*.*"
+          include: true
+    scripts:
+      - name: Write .env from secure variable
+        script: |
+          echo "$ZOLD_ENV_FILE" > "$CM_BUILD_DIR/.env"
+
+      - name: Set up Android signing
+        script: |
+          echo "$CM_KEYSTORE" | base64 --decode > "$CM_BUILD_DIR/android/app/keystore.jks"
+          cat <<EOF > "$CM_BUILD_DIR/android/key.properties"
+          storePassword=$CM_KEYSTORE_PASSWORD
+          keyPassword=$CM_KEY_ALIAS_PASSWORD
+          keyAlias=$CM_KEY_ALIAS
+          storeFile=keystore.jks
+          EOF
+
+      - name: Get Flutter packages
+        script: |
+          flutter pub get
+
+      - name: Build AAB
+        script: |
+          flutter build appbundle --release
+    artifacts:
+      - build/app/outputs/**/*.aab
+      - build/app/outputs/**/mapping.txt
+    publishing:
+      email:
+        recipients:
+          - dme@botivate.in
+        notify:
+          success: true
+          failure: true
+      google_play:
+        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        track: internal          # start on internal testing; move to production manually in Play Console once ready
+        submit_as_draft: true

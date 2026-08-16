@@ -3,7 +3,11 @@ workflows:
     name: ZOLD Android Production
     max_build_duration: 60
     environment:
-      flutter: stable
+      # Pinned, not `stable`: current Flutter stable requires Gradle >= 9.1 / AGP >= 9.0.1 /
+      # Kotlin >= 2.2.20, while this project targets Gradle 8.11.1 / AGP 8.9.1 / Kotlin 2.1.0.
+      # 3.35.1 is the last release compatible with that toolchain. Upgrading Flutter here means
+      # upgrading all three of those together (and handling the AGP 9 "new DSL" migration).
+      flutter: 3.35.1
       groups:
         - zold_env          # holds BASE_URL, RAZORPAY_KEY, RISK_DISCLOSURE_PDF_URL, CONNECT_TIMEOUT, RECEIVE_TIMEOUT, PRIVACY_POLICY_URL, WEB_URL
         - zold_android_signing  # holds CM_KEYSTORE, CM_KEYSTORE_PASSWORD, CM_KEY_ALIAS, CM_KEY_ALIAS_PASSWORD

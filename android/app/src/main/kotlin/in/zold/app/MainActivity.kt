@@ -1,4 +1,4 @@
-package in.zold.app
+package `in`.zold.app
 
 import io.flutter.embedding.android.FlutterActivity
 

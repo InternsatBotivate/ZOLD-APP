@@ -5,7 +5,11 @@ import '../../routes/app_routes.dart';
 
 class AuthMiddleware extends GetMiddleware {
   // TEMPORARY DEVELOPMENT BYPASS - REMOVE BEFORE PRODUCTION
-  static const bool _bypassKyc = false;
+  // Enabled for the Play Console review build: KYC is not required yet (planned for a future
+  // release) and this also lets the reviewer account (playreview@zold.in) skip KYC without any
+  // backend changes. Applies to ALL users, not just the reviewer -- flip back to false before
+  // a real production rollout unless KYC is genuinely still optional at that point.
+  static const bool _bypassKyc = true;
 
   @override
   RouteSettings? redirect(String? route) {

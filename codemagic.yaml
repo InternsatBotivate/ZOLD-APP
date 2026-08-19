@@ -57,16 +57,23 @@ workflows:
 
       - name: Set build number from Play Console
         script: |
+          set -e
+          export GOOGLE_PLAY_SERVICE_ACCOUNT_CREDENTIALS="$GCLOUD_SERVICE_ACCOUNT_CREDENTIALS"
           LATEST_BUILD_NUMBER=$(google-play get-latest-build-number \
             --package-name "$PACKAGE_NAME" \
-            --credentials "$GCLOUD_SERVICE_ACCOUNT_CREDENTIALS" \
             --tracks="internal,alpha,beta,production")
+          if ! [[ "$LATEST_BUILD_NUMBER" =~ ^[0-9]+$ ]]; then
+            echo "ERROR: get-latest-build-number did not return a number: '$LATEST_BUILD_NUMBER'"
+            exit 1
+          fi
           echo "Latest build number across all tracks: $LATEST_BUILD_NUMBER"
           echo "NEXT_BUILD_NUMBER=$((LATEST_BUILD_NUMBER + 1))" >> $CM_ENV
 
       - name: Build AAB
         script: |
-          flutter build appbundle --release --build-number=$NEXT_BUILD_NUMBER
+          set -e
+          : "${NEXT_BUILD_NUMBER:?NEXT_BUILD_NUMBER was not set by the previous step}"
+          flutter build appbundle --release --build-number="$NEXT_BUILD_NUMBER"
     artifacts:
       - build/app/outputs/**/*.aab
       - build/app/outputs/**/mapping.txt
@@ -128,16 +135,23 @@ workflows:
 
       - name: Set build number from Play Console
         script: |
+          set -e
+          export GOOGLE_PLAY_SERVICE_ACCOUNT_CREDENTIALS="$GCLOUD_SERVICE_ACCOUNT_CREDENTIALS"
           LATEST_BUILD_NUMBER=$(google-play get-latest-build-number \
             --package-name "$PACKAGE_NAME" \
-            --credentials "$GCLOUD_SERVICE_ACCOUNT_CREDENTIALS" \
             --tracks="internal,alpha,beta,production")
+          if ! [[ "$LATEST_BUILD_NUMBER" =~ ^[0-9]+$ ]]; then
+            echo "ERROR: get-latest-build-number did not return a number: '$LATEST_BUILD_NUMBER'"
+            exit 1
+          fi
           echo "Latest build number across all tracks: $LATEST_BUILD_NUMBER"
           echo "NEXT_BUILD_NUMBER=$((LATEST_BUILD_NUMBER + 1))" >> $CM_ENV
 
       - name: Build AAB
         script: |
-          flutter build appbundle --release --build-number=$NEXT_BUILD_NUMBER
+          set -e
+          : "${NEXT_BUILD_NUMBER:?NEXT_BUILD_NUMBER was not set by the previous step}"
+          flutter build appbundle --release --build-number="$NEXT_BUILD_NUMBER"
     artifacts:
       - build/app/outputs/**/*.aab
       - build/app/outputs/**/mapping.txt
@@ -201,16 +215,23 @@ workflows:
 
       - name: Set build number from Play Console
         script: |
+          set -e
+          export GOOGLE_PLAY_SERVICE_ACCOUNT_CREDENTIALS="$GCLOUD_SERVICE_ACCOUNT_CREDENTIALS"
           LATEST_BUILD_NUMBER=$(google-play get-latest-build-number \
             --package-name "$PACKAGE_NAME" \
-            --credentials "$GCLOUD_SERVICE_ACCOUNT_CREDENTIALS" \
             --tracks="internal,alpha,beta,production")
+          if ! [[ "$LATEST_BUILD_NUMBER" =~ ^[0-9]+$ ]]; then
+            echo "ERROR: get-latest-build-number did not return a number: '$LATEST_BUILD_NUMBER'"
+            exit 1
+          fi
           echo "Latest build number across all tracks: $LATEST_BUILD_NUMBER"
           echo "NEXT_BUILD_NUMBER=$((LATEST_BUILD_NUMBER + 1))" >> $CM_ENV
 
       - name: Build AAB
         script: |
-          flutter build appbundle --release --build-number=$NEXT_BUILD_NUMBER
+          set -e
+          : "${NEXT_BUILD_NUMBER:?NEXT_BUILD_NUMBER was not set by the previous step}"
+          flutter build appbundle --release --build-number="$NEXT_BUILD_NUMBER"
     artifacts:
       - build/app/outputs/**/*.aab
       - build/app/outputs/**/mapping.txt

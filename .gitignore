@@ -27,3 +27,5 @@ android/key.properties
 
 # Play Store service account credentials
 google-play-service-account.json
+appstore-connect-api-key.p8
+publishing_artifacts/

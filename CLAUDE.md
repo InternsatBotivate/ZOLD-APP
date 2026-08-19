@@ -82,10 +82,15 @@ Razorpay (`razorpay_flutter`) is used for SIP orders, coin cart checkout, and me
 
 Android package name (`applicationId`/`namespace`) is `in.zold.app` (`android/app/build.gradle.kts`, `android/app/src/main/kotlin/in/zold/app/MainActivity.kt`) — this is permanent once published, do not change it after the first Play Store upload.
 
-Builds run on **Codemagic** (`codemagic.yaml`, workflow `android-production`), not locally — this project intentionally has no local Flutter SDK install. Codemagic:
-- Reconstructs `.env` from the individual variables in the `zold_env` group (`BASE_URL`, `RAZORPAY_KEY`, `RISK_DISCLOSURE_PDF_URL`, `CONNECT_TIMEOUT`, `RECEIVE_TIMEOUT`, `PRIVACY_POLICY_URL`, `WEB_URL` — see `.env.example`).
-- Reconstructs the release keystore from `zold_android_signing` (`CM_KEYSTORE` base64, `CM_KEYSTORE_PASSWORD`, `CM_KEY_ALIAS`, `CM_KEY_ALIAS_PASSWORD`) into `android/key.properties` / `android/app/keystore.jks` at build time — neither file is committed (see `.gitignore`).
-- Runs `flutter build appbundle --release` and can auto-submit the `.aab` to Play Console via `zold_play_credentials` (Google Play service-account JSON), similar to how FrogPlanner (`FrogPlanner_App`) uses EAS + `google-play-service-account.json` — but Codemagic/Flutter is the equivalent tool here, not EAS, since this is not an Expo/React Native project.
-- Triggers on push to `main` and on `v*.*.*` tags; publishes to the `internal` Play Store track as a draft by default — promote to production manually in Play Console until the release process is proven out.
+Builds run on **Codemagic** (`codemagic.yaml`), not locally — this project intentionally has no local Flutter SDK install. Flutter is pinned to `3.35.6` (not `stable`) because this project's Gradle 8.11.1 / AGP 8.9.1 / Kotlin 2.1.0 toolchain is behind what current Flutter stable requires (Gradle ≥9.1, AGP ≥9.0.1, Kotlin ≥2.2.20, plus an AGP 9 "new DSL" migration) — upgrading the toolchain is a deliberate future task, not something to bump casually.
+
+There are three workflows, all sharing the same build/sign steps (write `.env` from `zold_env`, reconstruct the keystore from `zold_android_signing`, fetch the next version code from Play Console via `google-play get-latest-build-number` across all tracks, `flutter build appbundle --release`), differing only in what happens to the `.aab`:
+- **`android-draft`** — uploads to the Play Console `internal` track as an unpublished draft (`submit_as_draft: true`). Triggers automatically on push to `main` and on `v*.*.*` tags. Safest default — nothing reaches anyone until you manually start the rollout in Play Console.
+- **`android-internal-release`** — publishes straight to the `internal` track, live to internal testers immediately (no Google review gate on that track). Manual/API trigger only.
+- **`android-production-release`** — publishes straight to `production` — real users, triggers Google review. Manual/API trigger only (also runs on `v*.*.*` tags).
+
+All three publish via `zold_play_credentials` (`GCLOUD_SERVICE_ACCOUNT_CREDENTIALS`, the Play Console service-account JSON) — similar in spirit to how FrogPlanner (`FrogPlanner_App`) uses EAS + `google-play-service-account.json`, but Codemagic/Flutter is the equivalent tool here, not EAS, since this is not an Expo/React Native project.
+
+`scripts/trigger_release.sh {draft|internal|production} [branch-or-tag]` triggers a build via the Codemagic REST API and polls it to completion, so a release can be kicked off from the terminal without opening the Codemagic dashboard. It reads `API_TOKEN` from `.env.codemagic` (gitignored, never commit it — it's a live Codemagic API credential).
 
 `android/app/build.gradle.kts` currently falls back to debug signing if `android/key.properties` doesn't exist locally, so `flutter build apk/appbundle` still works without the release keystore present.

@@ -1,6 +1,9 @@
 workflows:
-  android-production:
-    name: ZOLD Android Production
+  # Builds, signs, and uploads to the Play Console *internal* track as an unpublished DRAFT.
+  # Nothing reaches testers or users until someone opens Play Console and starts the rollout.
+  # Safest option -- use for routine builds you want to eyeball before releasing.
+  android-draft:
+    name: ZOLD Android - Draft (internal, unpublished)
     max_build_duration: 60
     environment:
       # Pinned, not `stable`: current Flutter stable requires Gradle >= 9.1 / AGP >= 9.0.1 /
@@ -10,11 +13,12 @@ workflows:
       # upgrading all three of those together (and handling the AGP 9 "new DSL" migration).
       flutter: 3.35.6
       groups:
-        - zold_env          # holds BASE_URL, RAZORPAY_KEY, RISK_DISCLOSURE_PDF_URL, CONNECT_TIMEOUT, RECEIVE_TIMEOUT, PRIVACY_POLICY_URL, WEB_URL
-        - zold_android_signing  # holds CM_KEYSTORE, CM_KEYSTORE_PASSWORD, CM_KEY_ALIAS, CM_KEY_ALIAS_PASSWORD
-        - zold_play_credentials  # holds GCLOUD_SERVICE_ACCOUNT_CREDENTIALS (Play Console service account JSON)
+        - zold_env
+        - zold_android_signing
+        - zold_play_credentials
       vars:
         PACKAGE_NAME: "in.zold.app"
+        RELEASE_TRACK: "internal"
     triggering:
       events:
         - push
@@ -56,8 +60,8 @@ workflows:
           LATEST_BUILD_NUMBER=$(google-play get-latest-build-number \
             --package-name "$PACKAGE_NAME" \
             --credentials "$GCLOUD_SERVICE_ACCOUNT_CREDENTIALS" \
-            --tracks="internal")
-          echo "Latest build number on internal track: $LATEST_BUILD_NUMBER"
+            --tracks="internal,alpha,beta,production")
+          echo "Latest build number across all tracks: $LATEST_BUILD_NUMBER"
           echo "NEXT_BUILD_NUMBER=$((LATEST_BUILD_NUMBER + 1))" >> $CM_ENV
 
       - name: Build AAB
@@ -75,5 +79,148 @@ workflows:
           failure: true
       google_play:
         credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
-        track: internal          # promote to production manually in Play Console once ready
+        track: internal
         submit_as_draft: true
+
+  # Builds, signs, and publishes straight to the Play Console *internal* track (no draft step).
+  # The internal track has no Google review gate, so this is live to internal testers
+  # immediately after the build finishes -- nothing goes to real end users.
+  android-internal-release:
+    name: ZOLD Android - Publish to Internal Testing
+    max_build_duration: 60
+    environment:
+      flutter: 3.35.6
+      groups:
+        - zold_env
+        - zold_android_signing
+        - zold_play_credentials
+      vars:
+        PACKAGE_NAME: "in.zold.app"
+        RELEASE_TRACK: "internal"
+    triggering:
+      events: []   # manual/API trigger only -- not tied to push, to avoid surprise auto-releases
+    scripts:
+      - name: Write .env from secure variables
+        script: |
+          cat <<EOF > "$CM_BUILD_DIR/.env"
+          BASE_URL=$BASE_URL
+          RAZORPAY_KEY=$RAZORPAY_KEY
+          RISK_DISCLOSURE_PDF_URL=$RISK_DISCLOSURE_PDF_URL
+          CONNECT_TIMEOUT=$CONNECT_TIMEOUT
+          RECEIVE_TIMEOUT=$RECEIVE_TIMEOUT
+          PRIVACY_POLICY_URL=$PRIVACY_POLICY_URL
+          WEB_URL=$WEB_URL
+          EOF
+
+      - name: Set up Android signing
+        script: |
+          echo "$CM_KEYSTORE" | base64 --decode > "$CM_BUILD_DIR/android/app/keystore.jks"
+          cat <<EOF > "$CM_BUILD_DIR/android/key.properties"
+          storePassword=$CM_KEYSTORE_PASSWORD
+          keyPassword=$CM_KEY_ALIAS_PASSWORD
+          keyAlias=$CM_KEY_ALIAS
+          storeFile=keystore.jks
+          EOF
+
+      - name: Get Flutter packages
+        script: |
+          flutter pub get
+
+      - name: Set build number from Play Console
+        script: |
+          LATEST_BUILD_NUMBER=$(google-play get-latest-build-number \
+            --package-name "$PACKAGE_NAME" \
+            --credentials "$GCLOUD_SERVICE_ACCOUNT_CREDENTIALS" \
+            --tracks="internal,alpha,beta,production")
+          echo "Latest build number across all tracks: $LATEST_BUILD_NUMBER"
+          echo "NEXT_BUILD_NUMBER=$((LATEST_BUILD_NUMBER + 1))" >> $CM_ENV
+
+      - name: Build AAB
+        script: |
+          flutter build appbundle --release --build-number=$NEXT_BUILD_NUMBER
+    artifacts:
+      - build/app/outputs/**/*.aab
+      - build/app/outputs/**/mapping.txt
+    publishing:
+      email:
+        recipients:
+          - dme@botivate.in
+        notify:
+          success: true
+          failure: true
+      google_play:
+        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        track: internal
+
+  # Builds, signs, and publishes straight to the Play Console *production* track.
+  # This is a real public release: it goes out to all users (subject to any rollout_fraction)
+  # and triggers Google's app review. Use deliberately, not as a routine/default workflow.
+  android-production-release:
+    name: ZOLD Android - Publish to Production
+    max_build_duration: 60
+    environment:
+      flutter: 3.35.6
+      groups:
+        - zold_env
+        - zold_android_signing
+        - zold_play_credentials
+      vars:
+        PACKAGE_NAME: "in.zold.app"
+        RELEASE_TRACK: "production"
+    triggering:
+      events: []   # manual/API trigger only -- production releases must be deliberate
+      tag_patterns:
+        - pattern: "v*.*.*"
+          include: true
+    scripts:
+      - name: Write .env from secure variables
+        script: |
+          cat <<EOF > "$CM_BUILD_DIR/.env"
+          BASE_URL=$BASE_URL
+          RAZORPAY_KEY=$RAZORPAY_KEY
+          RISK_DISCLOSURE_PDF_URL=$RISK_DISCLOSURE_PDF_URL
+          CONNECT_TIMEOUT=$CONNECT_TIMEOUT
+          RECEIVE_TIMEOUT=$RECEIVE_TIMEOUT
+          PRIVACY_POLICY_URL=$PRIVACY_POLICY_URL
+          WEB_URL=$WEB_URL
+          EOF
+
+      - name: Set up Android signing
+        script: |
+          echo "$CM_KEYSTORE" | base64 --decode > "$CM_BUILD_DIR/android/app/keystore.jks"
+          cat <<EOF > "$CM_BUILD_DIR/android/key.properties"
+          storePassword=$CM_KEYSTORE_PASSWORD
+          keyPassword=$CM_KEY_ALIAS_PASSWORD
+          keyAlias=$CM_KEY_ALIAS
+          storeFile=keystore.jks
+          EOF
+
+      - name: Get Flutter packages
+        script: |
+          flutter pub get
+
+      - name: Set build number from Play Console
+        script: |
+          LATEST_BUILD_NUMBER=$(google-play get-latest-build-number \
+            --package-name "$PACKAGE_NAME" \
+            --credentials "$GCLOUD_SERVICE_ACCOUNT_CREDENTIALS" \
+            --tracks="internal,alpha,beta,production")
+          echo "Latest build number across all tracks: $LATEST_BUILD_NUMBER"
+          echo "NEXT_BUILD_NUMBER=$((LATEST_BUILD_NUMBER + 1))" >> $CM_ENV
+
+      - name: Build AAB
+        script: |
+          flutter build appbundle --release --build-number=$NEXT_BUILD_NUMBER
+    artifacts:
+      - build/app/outputs/**/*.aab
+      - build/app/outputs/**/mapping.txt
+    publishing:
+      email:
+        recipients:
+          - dme@botivate.in
+        notify:
+          success: true
+          failure: true
+      google_play:
+        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        track: production

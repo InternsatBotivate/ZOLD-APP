@@ -60,8 +60,7 @@ workflows:
           set -e
           export GOOGLE_PLAY_SERVICE_ACCOUNT_CREDENTIALS="$GCLOUD_SERVICE_ACCOUNT_CREDENTIALS"
           LATEST_BUILD_NUMBER=$(google-play get-latest-build-number \
-            --package-name "$PACKAGE_NAME" \
-            --tracks="internal,alpha,beta,production")
+            --package-name "$PACKAGE_NAME")
           if ! [[ "$LATEST_BUILD_NUMBER" =~ ^[0-9]+$ ]]; then
             echo "ERROR: get-latest-build-number did not return a number: '$LATEST_BUILD_NUMBER'"
             exit 1
@@ -138,8 +137,7 @@ workflows:
           set -e
           export GOOGLE_PLAY_SERVICE_ACCOUNT_CREDENTIALS="$GCLOUD_SERVICE_ACCOUNT_CREDENTIALS"
           LATEST_BUILD_NUMBER=$(google-play get-latest-build-number \
-            --package-name "$PACKAGE_NAME" \
-            --tracks="internal,alpha,beta,production")
+            --package-name "$PACKAGE_NAME")
           if ! [[ "$LATEST_BUILD_NUMBER" =~ ^[0-9]+$ ]]; then
             echo "ERROR: get-latest-build-number did not return a number: '$LATEST_BUILD_NUMBER'"
             exit 1
@@ -218,8 +216,7 @@ workflows:
           set -e
           export GOOGLE_PLAY_SERVICE_ACCOUNT_CREDENTIALS="$GCLOUD_SERVICE_ACCOUNT_CREDENTIALS"
           LATEST_BUILD_NUMBER=$(google-play get-latest-build-number \
-            --package-name "$PACKAGE_NAME" \
-            --tracks="internal,alpha,beta,production")
+            --package-name "$PACKAGE_NAME")
           if ! [[ "$LATEST_BUILD_NUMBER" =~ ^[0-9]+$ ]]; then
             echo "ERROR: get-latest-build-number did not return a number: '$LATEST_BUILD_NUMBER'"
             exit 1

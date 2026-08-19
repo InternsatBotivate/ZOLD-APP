@@ -76,7 +76,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
       if (response.data is! Map<String, dynamic>) {
         return BaseResponse(
           success: false,
-          message: "Unexpected response format",
+          message: "Invalid data from server",
           data: 0.0,
         );
       }
@@ -96,7 +96,11 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
       });
     } catch (e) {
       debugPrint("ERROR: getCurrentGst failed: $e");
-      return BaseResponse(success: false, message: e.toString(), data: 0.0);
+      return BaseResponse(
+        success: false,
+        message: "Something went wrong. Please try again.",
+        data: 0.0,
+      );
     }
   }
 
@@ -111,7 +115,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
       if (response.data is! Map<String, dynamic>) {
         return BaseResponse(
           success: false,
-          message: "Unexpected response format",
+          message: "Invalid data from server",
           data: [],
         );
       }
@@ -134,7 +138,11 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
       });
     } catch (e) {
       debugPrint("ERROR: getGstHistory failed: $e");
-      return BaseResponse(success: false, message: e.toString(), data: []);
+      return BaseResponse(
+        success: false,
+        message: "Something went wrong. Please try again.",
+        data: [],
+      );
     }
   }
 

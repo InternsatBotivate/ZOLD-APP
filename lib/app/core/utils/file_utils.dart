@@ -53,7 +53,7 @@ class FileUtils {
         }
       } else {
         SnackbarUtils.showError(
-          'Server returned error: ${response.statusCode}',
+          'Unable to download document (Error ${response.statusCode})',
         );
       }
     } on DioException catch (e) {
@@ -62,13 +62,13 @@ class FileUtils {
           e.type == DioExceptionType.receiveTimeout) {
         errorMessage = 'Network timeout. Check your connection.';
       } else if (e.type == DioExceptionType.badResponse) {
-        errorMessage = 'Server error (${e.response?.statusCode}).';
+        errorMessage = 'Server problem. Please try again later.';
       } else if (e.type == DioExceptionType.connectionError) {
         errorMessage = 'No internet connection.';
       }
       SnackbarUtils.showError(errorMessage);
     } catch (e) {
-      SnackbarUtils.showError('An unexpected error occurred.');
+      SnackbarUtils.showError('Something went wrong while downloading the document. Please try again.');
     }
   }
 

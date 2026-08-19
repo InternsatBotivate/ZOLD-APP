@@ -65,7 +65,7 @@ class ErrorHandler {
             );
           default:
             return UnknownFailure(
-              serverMessage ?? 'Connection error: $statusCode',
+              serverMessage ?? 'Technical error ($statusCode). Please try again.',
             );
         }
 
@@ -106,6 +106,6 @@ class ErrorHandler {
     if (error is FormatException) {
       return UnknownFailure('Invalid data format received from the server.');
     }
-    return UnknownFailure('An unexpected error occurred. Please try again.');
+    return UnknownFailure('Something went wrong. Please try again.');
   }
 }

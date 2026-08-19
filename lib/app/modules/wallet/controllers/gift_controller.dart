@@ -331,7 +331,7 @@ class GiftController extends GetxController {
         debugPrint('Gift refresh error: $e');
       }
     } catch (e) {
-      SnackbarUtils.showError(e.toString());
+      SnackbarUtils.showError('Failed to send gift. Please try again.');
     } finally {
       isProcessing.value = false;
       paymentStatus.value = '';

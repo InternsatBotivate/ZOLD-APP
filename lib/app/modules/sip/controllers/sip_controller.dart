@@ -204,7 +204,7 @@ class SipController extends GetxController {
         fetchSipPlans();
       }
     } catch (e) {
-      SnackbarUtils.showError(e.toString());
+      SnackbarUtils.showError('Failed to create SIP plan.');
     } finally {
       creating.value = false;
     }
@@ -262,7 +262,7 @@ class SipController extends GetxController {
     } catch (e) {
       isProcessing.value = false;
       paymentStatus.value = '';
-      SnackbarUtils.showError(e.toString());
+      SnackbarUtils.showError('Something went wrong with the subscription.');
     } finally {
       subscribing.value = false;
     }
@@ -308,7 +308,7 @@ class SipController extends GetxController {
     } catch (e) {
       isProcessing.value = false;
       paymentStatus.value = '';
-      SnackbarUtils.showError(e.toString());
+      SnackbarUtils.showError('Failed to initiate top-up.');
     } finally {
       toppingUp.value = false;
     }
@@ -327,7 +327,7 @@ class SipController extends GetxController {
       SnackbarUtils.showSuccess('SIP modified successfully');
       fetchUserSips();
     } catch (e) {
-      SnackbarUtils.showError(e.toString());
+      SnackbarUtils.showError('Failed to modify SIP.');
     } finally {
       modifying.value = false;
     }

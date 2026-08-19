@@ -47,7 +47,7 @@ class UserManagementController extends GetxController {
       final response = await _adminRepository.getAllUsers();
       users.value = response.data ?? [];
     } catch (e) {
-      SnackbarUtils.showError(e.toString());
+      SnackbarUtils.showError('Failed to load users. Please try again.');
     } finally {
       isLoading.value = false;
     }

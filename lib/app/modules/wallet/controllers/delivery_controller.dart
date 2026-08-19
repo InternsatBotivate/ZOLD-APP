@@ -208,7 +208,7 @@ class DeliveryController extends GetxController {
         debugPrint('Delivery refresh error: $e');
       }
     } catch (e) {
-      SnackbarUtils.showError(e.toString());
+      SnackbarUtils.showError('Failed to submit delivery request.');
     } finally {
       isProcessing.value = false;
       paymentStatus.value = '';
@@ -222,7 +222,7 @@ class DeliveryController extends GetxController {
       SnackbarUtils.showSuccess('Delivery cancelled');
       fetchAll();
     } catch (e) {
-      SnackbarUtils.showError(e.toString());
+      SnackbarUtils.showError('Failed to cancel delivery.');
     } finally {
       isLoading.value = false;
     }
@@ -237,7 +237,7 @@ class DeliveryController extends GetxController {
       fetchAll();
       Get.back();
     } catch (e) {
-      SnackbarUtils.showError(e.toString());
+      SnackbarUtils.showError('Failed to update date.');
     } finally {
       isLoading.value = false;
     }
@@ -249,7 +249,7 @@ class DeliveryController extends GetxController {
       await _deliveryRepository.completeDelivery(deliveryId);
       SnackbarUtils.showSuccess('OTP sent to customer');
     } catch (e) {
-      SnackbarUtils.showError(e.toString());
+      SnackbarUtils.showError('Failed to send OTP.');
     } finally {
       isLoading.value = false;
     }

@@ -50,7 +50,7 @@ class GoalsController extends GetxController {
         );
       }
     } catch (e) {
-      SnackbarUtils.showError(e.toString());
+      SnackbarUtils.showError('Failed to load goals. Please try again.');
     } finally {
       isLoading.value = false;
     }
@@ -82,7 +82,7 @@ class GoalsController extends GetxController {
         );
       }
     } catch (e) {
-      SnackbarUtils.showError(e.toString());
+      SnackbarUtils.showError('Failed to create goal. Please check your data.');
     } finally {
       isActionLoading.value = false;
     }
@@ -101,7 +101,7 @@ class GoalsController extends GetxController {
         SnackbarUtils.showSuccess('Goal updated successfully');
       }
     } catch (e) {
-      SnackbarUtils.showError(e.toString());
+      SnackbarUtils.showError('Failed to update goal.');
     } finally {
       isActionLoading.value = false;
     }
@@ -117,7 +117,7 @@ class GoalsController extends GetxController {
         SnackbarUtils.showSuccess('Goal deleted successfully');
       }
     } catch (e) {
-      SnackbarUtils.showError(e.toString());
+      SnackbarUtils.showError('Failed to delete goal.');
     } finally {
       isActionLoading.value = false;
     }

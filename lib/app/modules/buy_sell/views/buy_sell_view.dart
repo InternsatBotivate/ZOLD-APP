@@ -267,7 +267,7 @@ class BuySellView extends GetView<BuySellController> {
                 ),
                 const SizedBox(height: 24),
                 Text(
-                  'Oops! Something went wrong',
+                  'Something went wrong',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,

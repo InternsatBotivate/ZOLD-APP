@@ -24,7 +24,7 @@ class BaseResponse<T> {
       );
       return BaseResponse(
         success: false,
-        message: 'Unexpected response format',
+        message: 'Server error. Please try again.',
       );
     }
 
@@ -53,7 +53,7 @@ class BaseResponse<T> {
       return BaseResponse(success: success, data: data, message: message);
     } catch (e) {
       AppLogger.e('BaseResponse: Factory error', e);
-      return BaseResponse(success: false, message: 'Parsing error occurred');
+      return BaseResponse(success: false, message: 'Something went wrong.');
     }
   }
 }

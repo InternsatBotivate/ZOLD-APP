@@ -135,7 +135,7 @@ class SecurityPrivacyController extends GetxController {
         SnackbarUtils.showError(res.message ?? 'Failed to update settings');
       }
     } catch (e) {
-      SnackbarUtils.showError('An error occurred while saving settings');
+      SnackbarUtils.showError('Failed to save settings. Please try again.');
     } finally {
       isLoading.value = false;
     }

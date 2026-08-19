@@ -180,7 +180,7 @@ class CoinCheckoutController extends GetxController {
     } catch (e) {
       _logger.e('[PAYMENT_FLOW] Exception in coin payment: $e');
       isProcessing.value = false;
-      SnackbarUtils.showError(e.toString());
+      SnackbarUtils.showError('Something went wrong during payment initialization.');
     }
   }
 

@@ -39,7 +39,7 @@ class SellRequestsController extends GetxController {
       final response = await _adminRepository.getSellRequests();
       sellRequests.value = response.data ?? [];
     } catch (e) {
-      SnackbarUtils.showError(e.toString());
+      SnackbarUtils.showError('Failed to fetch sell requests');
     } finally {
       isLoading.value = false;
     }
@@ -53,7 +53,7 @@ class SellRequestsController extends GetxController {
       Get.back(); // Close modal if open
       SnackbarUtils.showSuccess('Request approved');
     } catch (e) {
-      SnackbarUtils.showError(e.toString());
+      SnackbarUtils.showError('Failed to approve request. Please try again.');
     } finally {
       actionLoading.value = false;
     }
@@ -71,7 +71,7 @@ class SellRequestsController extends GetxController {
       Get.back(); // Close modal if open
       SnackbarUtils.showSuccess('Request rejected');
     } catch (e) {
-      SnackbarUtils.showError(e.toString());
+      SnackbarUtils.showError('Failed to reject request. Please try again.');
     } finally {
       actionLoading.value = false;
     }

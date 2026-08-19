@@ -68,7 +68,7 @@ class GstManagementController extends GetxController {
     } catch (e, st) {
       debugPrint("CRITICAL: GST Controller Fetch Error: $e");
       debugPrint("STACK TRACE:\n$st");
-      error.value = "System Error: ${e.toString()}";
+      error.value = "Failed to load GST data. Please try again.";
     } finally {
       isLoading.value = false;
       debugPrint(
@@ -123,7 +123,7 @@ class GstManagementController extends GetxController {
     } catch (e, st) {
       debugPrint("CRITICAL: GST Controller Update Error: $e");
       debugPrint("STACK TRACE:\n$st");
-      error.value = e.toString();
+      error.value = "Failed to update GST rate. Please try again.";
     } finally {
       isSaving.value = false;
     }

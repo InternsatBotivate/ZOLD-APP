@@ -15,7 +15,14 @@ if [ ! -f .env.codemagic ]; then
   echo "Missing .env.codemagic with API_TOKEN=... " >&2
   exit 1
 fi
-source <(grep -v '^#' .env.codemagic)
+set -a
+source .env.codemagic
+set +a
+
+if [ -z "${API_TOKEN:-}" ]; then
+  echo "API_TOKEN not set after sourcing .env.codemagic" >&2
+  exit 1
+fi
 
 APP_ID="6a80b07a4c45db6ab10510ee"
 MODE="${1:-draft}"

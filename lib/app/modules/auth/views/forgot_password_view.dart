@@ -9,6 +9,9 @@ class ForgotPasswordView extends GetView<ForgotPasswordController> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return AuthBackground(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -22,61 +25,74 @@ class ForgotPasswordView extends GetView<ForgotPasswordController> {
                     margin: const EdgeInsets.only(bottom: 20),
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Colors.red[50] ?? const Color(0xFFFFEBEE),
+                      color: isDark
+                          ? theme.colorScheme.error.withValues(alpha: 0.1)
+                          : const Color(0xFFFFEBEE),
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
-                        color: Colors.red[100] ?? const Color(0xFFFFCDD2),
+                        color: isDark
+                            ? theme.colorScheme.error.withValues(alpha: 0.3)
+                            : const Color(0xFFFFCDD2),
                       ),
                     ),
                     child: Text(
                       controller.errorMessage.value,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: AppColors.error,
+                      style: TextStyle(
+                        color: theme.colorScheme.error,
                         fontSize: 14,
                       ),
                     ),
                   )
                 : const SizedBox.shrink(),
           ),
-          const Text(
+          Text(
             'Reset Password',
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: theme.colorScheme.onSurface,
             ),
           ),
           const SizedBox(height: 12),
-          const Text(
+          Text(
             "Enter your registered email and we'll send you a verification code.",
             textAlign: TextAlign.center,
-            style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
+            style: TextStyle(
+              color: theme.textTheme.bodySmall?.color,
+              fontSize: 14,
+            ),
           ),
           const SizedBox(height: 32),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'Email Address',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: AppColors.textPrimary,
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 8),
-              TextField(
-                controller: controller.emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  hintText: 'Enter your email',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
+              GetBuilder<ForgotPasswordController>(
+                builder: (controller) => TextField(
+                  controller: controller.emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  style: TextStyle(color: theme.colorScheme.onSurface),
+                  decoration: InputDecoration(
+                    hintText: 'Enter your email',
+                    hintStyle: TextStyle(
+                      color: theme.textTheme.bodySmall?.color,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
                   ),
                 ),
               ),
@@ -87,12 +103,14 @@ class ForgotPasswordView extends GetView<ForgotPasswordController> {
             width: double.infinity,
             child: Obx(
               () => ElevatedButton(
-                onPressed: controller.isLoading.value
-                    ? null
-                    : controller.sendCode,
+                onPressed: controller.isLoading.value ? null : controller.sendCode,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.authGradientStart,
-                  foregroundColor: Colors.white,
+                  backgroundColor: isDark
+                      ? theme.colorScheme.primary
+                      : AppColors.authGradientStart,
+                  foregroundColor: isDark
+                      ? theme.colorScheme.onPrimary
+                      : Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -110,11 +128,13 @@ class ForgotPasswordView extends GetView<ForgotPasswordController> {
                     ),
                     const SizedBox(width: 8),
                     if (controller.isLoading.value)
-                      const SizedBox(
+                      SizedBox(
                         height: 16,
                         width: 16,
                         child: CircularProgressIndicator(
-                          color: Colors.white,
+                          color: isDark
+                              ? theme.colorScheme.onPrimary
+                              : Colors.white,
                           strokeWidth: 2,
                         ),
                       )
@@ -128,9 +148,9 @@ class ForgotPasswordView extends GetView<ForgotPasswordController> {
           const SizedBox(height: 24),
           TextButton(
             onPressed: controller.backToLogin,
-            child: const Text(
+            child: Text(
               'Back to Login',
-              style: TextStyle(color: AppColors.textSecondary),
+              style: TextStyle(color: theme.textTheme.bodySmall?.color),
             ),
           ),
         ],

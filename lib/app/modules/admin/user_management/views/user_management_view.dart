@@ -386,7 +386,7 @@ class UserManagementView extends GetView<UserManagementController> {
           ),
         ),
         DataCell(_buildRoleBadge(context, user.role)),
-        DataCell(_buildStatusBadge(context, user.isVerified ?? false)),
+        DataCell(_buildStatusBadge(context, user.isVerified)),
         DataCell(
           Align(
             alignment: Alignment.centerRight,

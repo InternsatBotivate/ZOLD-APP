@@ -24,8 +24,15 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     if (cookies == null || cookies.isEmpty) return null;
 
     for (var cookie in cookies) {
-      if (cookie.startsWith('token=')) {
-        return cookie.split(';').first.split('=').last;
+      // Handle 'token=xyz; Path=/; HttpOnly'
+      if (cookie.contains('token=')) {
+        final parts = cookie.split(';');
+        for (var part in parts) {
+          final trimmedPart = part.trim();
+          if (trimmedPart.startsWith('token=')) {
+            return trimmedPart.substring('token='.length);
+          }
+        }
       }
     }
     return null;
@@ -37,10 +44,15 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     final token = _extractToken(response);
     final data = Map<String, dynamic>.from(response.data);
 
-    if (!data.containsKey('data')) {
-      data['data'] = {'token': token ?? data['token'], 'user': data['user']};
-    } else if (token != null) {
-      data['data']['token'] = token;
+    // Backend returns { success: true, user: { ... } }
+    // We need to inject the token if it's in the cookie
+    final userData = data['user'] as Map<String, dynamic>?;
+    
+    if (userData != null) {
+      data['data'] = {
+        'token': token ?? data['token'] ?? '',
+        'user': userData,
+      };
     }
 
     return BaseResponse.fromJson(
@@ -57,8 +69,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     final data = Map<String, dynamic>.from(response.data);
 
     // Backend returns response directly without 'data' key for signup
+    // e.g. { success: true, message: "...", role: "USER", referralCode: "..." }
     if (!data.containsKey('data')) {
-      data['data'] = data;
+      // Create a shallow copy to avoid circular reference if BaseResponse uses 'data' key
+      data['data'] = Map<String, dynamic>.from(data);
     }
 
     return BaseResponse.fromJson(data, (json) => json as Map<String, dynamic>);
@@ -114,13 +128,14 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<BaseResponse<User>> getMe() async {
-    final response = await _dio.get(
-      '/auth/me',
-    ); // Backend uses /auth/me for getMe
+    final response = await _dio.get('/auth/me');
     final data = Map<String, dynamic>.from(response.data);
-    if (!data.containsKey('data')) {
+    
+    // Backend returns { success: true, user: { ... } }
+    if (!data.containsKey('data') && data.containsKey('user')) {
       data['data'] = data['user'];
     }
+    
     return BaseResponse.fromJson(
       data,
       (json) => User.fromJson(json as Map<String, dynamic>),

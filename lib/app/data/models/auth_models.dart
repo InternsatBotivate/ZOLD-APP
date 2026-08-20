@@ -71,7 +71,7 @@ class User {
   final String? city;
   final String? state;
   final String? pincode;
-  final bool? isVerified;
+  final bool isVerified;
   final String? referralCode;
   final Kyc? kyc;
   final UserInventory? inventory;
@@ -91,7 +91,7 @@ class User {
     this.city,
     this.state,
     this.pincode,
-    this.isVerified,
+    required this.isVerified,
     this.referralCode,
     this.kyc,
     this.inventory,
@@ -125,7 +125,7 @@ class User {
       pincode: json['pincode']?.toString(),
       isVerified: json['isVerified'] is bool
           ? json['isVerified']
-          : (json['isVerified'] == 1 || json['isVerified'] == 'true'),
+          : (json['isVerified'] == 1 || json['isVerified'].toString().toLowerCase() == 'true'),
       referralCode: json['referralCode']?.toString(),
       kyc: json['kyc'] != null && json['kyc'] is Map<String, dynamic>
           ? Kyc.fromJson(json['kyc'])
@@ -192,8 +192,8 @@ class LoginResponse {
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
     return LoginResponse(
-      token: json['token'],
-      user: User.fromJson(json['user']),
+      token: json['token']?.toString() ?? '',
+      user: User.fromJson(json['user'] as Map<String, dynamic>),
     );
   }
 }

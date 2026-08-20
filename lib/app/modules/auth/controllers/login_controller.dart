@@ -6,6 +6,7 @@ import '../../../data/models/auth_models.dart';
 import '../../../core/services/auth_service.dart';
 import '../../../core/storage/secure_storage.dart';
 import '../../../routes/app_routes.dart';
+import '../../../core/utils/snackbar_utils.dart';
 
 class LoginController extends GetxController {
   final AuthRepository _authRepository;
@@ -48,26 +49,37 @@ class LoginController extends GetxController {
       );
 
       if (response.success && response.data != null) {
-        await SecureStorage().saveToken(response.data!.token);
+        final token = response.data!.token;
+        if (token.isNotEmpty) {
+          await SecureStorage().saveToken(token);
+          
+          // Fetch full profile and KYC status before navigation
+          await AuthService.to.validateSession();
 
-        // Fetch full profile and KYC status before navigation
-        await AuthService.to.validateSession();
+          // Set loading to false BEFORE navigation to avoid triggering Obx after disposal
+          isLoading.value = false;
 
-        // Set loading to false BEFORE navigation to avoid triggering Obx after disposal
-        isLoading.value = false;
+          SnackbarUtils.showSuccess('Login successful');
 
-        // Parity with Next.js: Check KYC completion status
-        if (AuthService.to.kycCompleted) {
-          Get.offAllNamed(Routes.home);
+          // Check KYC completion status
+          if (AuthService.to.kycCompleted) {
+            Get.offAllNamed(Routes.home);
+          } else {
+            Get.offAllNamed(Routes.kyc);
+          }
         } else {
-          Get.offAllNamed(Routes.kyc);
+          errorMessage.value = response.message ?? 'Login failed';
+          SnackbarUtils.showError(errorMessage.value);
+          isLoading.value = false;
         }
       } else {
         errorMessage.value = response.message ?? 'Login failed';
+        SnackbarUtils.showError(errorMessage.value);
         isLoading.value = false;
       }
     } catch (e) {
       errorMessage.value = e.toString();
+      SnackbarUtils.showError(errorMessage.value);
       isLoading.value = false;
     }
   }

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../../../data/repositories/auth_repository_impl.dart';
 import '../../../data/models/auth_models.dart';
 import '../../../routes/app_routes.dart';
+import '../../../core/utils/snackbar_utils.dart';
 
 class ForgotPasswordController extends GetxController {
   final AuthRepository _authRepository;
@@ -30,6 +31,8 @@ class ForgotPasswordController extends GetxController {
         ForgotPasswordRequest(email: emailController.text.trim()),
       );
 
+      SnackbarUtils.showInfo('OTP sent to your email');
+
       Get.toNamed(
         Routes.otpVerification,
         arguments: {
@@ -40,6 +43,7 @@ class ForgotPasswordController extends GetxController {
     } catch (e) {
       // Still advance as per Next.js logic, or handle real network error
       errorMessage.value = e.toString();
+      SnackbarUtils.showError(errorMessage.value);
     } finally {
       isLoading.value = false;
     }
@@ -51,7 +55,8 @@ class ForgotPasswordController extends GetxController {
 
   @override
   void onClose() {
-    emailController.dispose();
+    // Manual disposal of TextEditingControllers in onClose can cause
+    // "used after disposed" errors during page transitions in GetX.
     super.onClose();
   }
 }

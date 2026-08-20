@@ -22,6 +22,7 @@ class SignupController extends GetxController {
   final showReferral = false.obs;
   final isLoading = false.obs;
   final errorMessage = ''.obs;
+  final obscurePassword = true.obs;
 
   @override
   void onInit() {
@@ -37,6 +38,10 @@ class SignupController extends GetxController {
 
   void toggleReferral() {
     showReferral.value = !showReferral.value;
+  }
+
+  void togglePasswordVisibility() {
+    obscurePassword.value = !obscurePassword.value;
   }
 
   Future<void> signup() async {
@@ -60,7 +65,7 @@ class SignupController extends GetxController {
         ),
       );
 
-      if (response.success) {
+      if (response.success && response.data != null) {
         isLoading.value = false;
         final role = response.data?['role'];
         if (role == 'ADMIN') {
@@ -69,6 +74,7 @@ class SignupController extends GetxController {
           );
           Get.offAllNamed(Routes.login);
         } else {
+          SnackbarUtils.showSuccess(response.message ?? 'OTP sent to your email');
           Get.toNamed(
             Routes.otpVerification,
             arguments: {'email': emailController.text.trim(), 'type': 'signup'},
@@ -76,10 +82,12 @@ class SignupController extends GetxController {
         }
       } else {
         errorMessage.value = response.message ?? 'Signup failed';
+        SnackbarUtils.showError(errorMessage.value);
         isLoading.value = false;
       }
     } catch (e) {
       errorMessage.value = e.toString();
+      SnackbarUtils.showError(errorMessage.value);
       isLoading.value = false;
     }
   }

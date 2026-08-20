@@ -77,12 +77,41 @@ class SignupView extends GetView<SignupController> {
             'Choose a username',
           ),
           const SizedBox(height: 16),
-          _buildTextField(
-            context,
-            'Password *',
-            controller.passwordController,
-            'Create a password',
-            obscureText: true,
+          // Special handling for password field with visibility toggle
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Password *',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: theme.colorScheme.onSurface,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Obx(
+                () => TextField(
+                  controller: controller.passwordController,
+                  obscureText: controller.obscurePassword.value,
+                  style: TextStyle(color: theme.colorScheme.onSurface),
+                  decoration: InputDecoration(
+                    hintText: 'Create a password',
+                    hintStyle: TextStyle(color: theme.textTheme.bodySmall?.color),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        controller.obscurePassword.value
+                            ? Icons.visibility_off_outlined
+                            : Icons.visibility_outlined,
+                        color: theme.textTheme.bodySmall?.color,
+                        size: 20,
+                      ),
+                      onPressed: controller.togglePasswordVisibility,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 16),
           Align(

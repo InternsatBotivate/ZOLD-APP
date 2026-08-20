@@ -15,6 +15,7 @@ class OTPVerificationController extends GetxController {
 
   final isLoading = false.obs;
   final errorMessage = ''.obs;
+  final obscurePassword = true.obs;
 
   late String email;
   late String type; // 'signup' or 'forgot_password'
@@ -25,6 +26,10 @@ class OTPVerificationController extends GetxController {
     final args = Get.arguments as Map<String, dynamic>?;
     email = args?['email'] ?? '';
     type = args?['type'] ?? 'signup';
+  }
+
+  void togglePasswordVisibility() {
+    obscurePassword.value = !obscurePassword.value;
   }
 
   Future<void> verify() async {
@@ -43,11 +48,12 @@ class OTPVerificationController extends GetxController {
         );
         if (response.success) {
           SnackbarUtils.showSuccess(
-            'Email verified successfully! Please login.',
+            response.message ?? 'Email verified successfully! Please login.',
           );
           Get.offAllNamed(Routes.login);
         } else {
           errorMessage.value = response.message ?? 'Invalid OTP';
+          SnackbarUtils.showError(errorMessage.value);
         }
       } else {
         // Forgot password - Reset password
@@ -63,13 +69,16 @@ class OTPVerificationController extends GetxController {
           ),
         );
         if (response.success) {
+          SnackbarUtils.showSuccess('Password reset successfully');
           Get.offNamed(Routes.resetPassword, arguments: {'success': true});
         } else {
           errorMessage.value = response.message ?? 'Invalid or expired code';
+          SnackbarUtils.showError(errorMessage.value);
         }
       }
     } catch (e) {
       errorMessage.value = e.toString();
+      SnackbarUtils.showError(errorMessage.value);
     } finally {
       isLoading.value = false;
     }
@@ -92,14 +101,10 @@ class OTPVerificationController extends GetxController {
     }
   }
 
-  void changeDetails() {
-    Get.back();
-  }
-
   @override
   void onClose() {
-    otpController.dispose();
-    newPasswordController.dispose();
+    // Manual disposal of TextEditingControllers in onClose can cause
+    // "used after disposed" errors during page transitions in GetX.
     super.onClose();
   }
 }
